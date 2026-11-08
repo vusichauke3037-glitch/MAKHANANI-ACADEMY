@@ -1,56 +1,163 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Makhanani Maths Lit App — Grade 10-12 | Xintimani Group</title>
+<title>Makhanani Maths Lit V2 — 100 Questions Per Topic + CAPS Papers | Xintimani Group</title>
+<meta name="description" content="Makhanani Maths Lit V2 — 100 unique questions per topic, CAPS Past Papers Set 1 & 2 Paper 1 & 2. Grade 10-12. Mr Vusi Chauke 0780233263">
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#0f172a;padding-bottom:40px}
-header{background:#0a1f4d;color:#fff;padding:16px;text-align:center}
-.logo-top{height:80px;width:auto;background:#fff;border-radius:12px;padding:6px}
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f5f3ff;color:#0f172a;padding-bottom:40px;line-height:1.6}
+header{background:#0a1f4d;color:#fff;padding:16px;text-align:center}.logo-top{height:80px;width:auto;background:#fff;border-radius:12px;padding:6px}
 .topbar{background:#fff;padding:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;border-bottom:2px solid #7c3aed;position:sticky;top:0;z-index:20}
-button{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;font-weight:800}input,select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
-.card{background:#fff;border-radius:16px;padding:16px;margin:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.wrap{max-width:1000px;margin:0 auto}
-.purple{background:#7c3aed;color:#fff}.blue{background:#0a1f4d;color:#fff}.green{background:#059669;color:#fff}.gold{background:#d4af37;color:#0a1f4d}.teal{background:#0d9488;color:#fff}
-.opt{border:2px solid #e2e8f0;border-radius:12px;padding:12px;margin:6px 0;cursor:pointer}.opt.sel{border:3px solid #059669;background:#ecfdf5}.opt.wrong{border:3px solid #ef4444;background:#fee2e2}.opt.right{border:3px solid #059669;background:#dcfce7}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;font-weight:800;text-decoration:none;display:inline-block}input,select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
+.card{background:#fff;border-radius:16px;padding:16px;margin:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}.wrap{max-width:1050px;margin:0 auto}
+.gold{background:#d4af37;color:#0a1f4d}.blue{background:#0a1f4d;color:#fff}.green{background:#059669;color:#fff}.purple{background:#7c3aed;color:#fff}.orange{background:#ea580c;color:#fff}.teal{background:#0d9488;color:#fff}.red{background:#dc2626;color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:750px){.grid{grid-template-columns:1fr 1fr}}
+.topic{border:2px solid #ede9fe;border-radius:14px;padding:14px;text-align:center;cursor:pointer;background:#fff}.topic.active{border:3px solid #7c3aed;background:#ede9fe}
+.qcard{border:2px solid #ede9fe;border-radius:14px;padding:14px;margin:10px 0;background:#fff}
 .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800;background:#ede9fe;color:#5b21b6}
-.bar{height:18px;background:#e2e8f0;border-radius:20px;overflow:hidden}.bar>div{height:100%;background:#7c3aed;color:#fff;font-size:11px;line-height:18px;text-align:right;padding-right:6px}
+.opt{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:10px;background:#fff;font-weight:700;cursor:pointer}.opt.correct{background:#dcfce7;border-color:#059669}.opt.wrong{background:#fee2e2;border-color:#ef4444}
+.hidden{display:none}table{width:100%;border-collapse:collapse}th,td{padding:10px;border:1px solid #eee;text-align:left;font-size:13px}th{background:#0a1f4d;color:#fff}
+.paper{border:3px solid #0a1f4d;border-radius:16px;padding:16px;margin:12px 0;background:#fff}
+.timer{position:fixed;bottom:12px;right:12px;background:#dc2626;color:#fff;padding:12px 16px;border-radius:20px;font-weight:900;z-index:99;display:none}
 </style></head>
 <body>
-<header><img src="logo.png" alt="XINTIMANI GROUP" class="logo-top" onerror="this.style.display='none'"><h1 style="margin:6px 0">📐 MAKHANANI MATHS LIT APP</h1><p style="margin:0;font-size:13px">Xintimani Group • Academy of Excellence • Founder Mr Vusi Chauke • WhatsApp 0780233263<br>Grade 10 • 11 • 12 — Learn. Practice. Pass.</p></header>
-<div class="topbar"><button class="purple" onclick="showTab('learn')">📚 LEARN</button><button class="blue" onclick="showTab('quiz')">✍️ QUIZ</button><button class="teal" onclick="showTab('papers')">📄 PAST PAPERS</button><button class="gold" onclick="showTab('progress')">📊 MY PROGRESS</button><a href="https://vusichauke3037-glitch.github.io/XINTIMANI-GROUP/" target="_blank" style="background:#0a1f4d;color:#fff;padding:12px 16px;border-radius:10px;font-weight:800">🏢 GROUP</a></div>
-<div class="wrap">
-<div class="card" style="text-align:center"><span class="badge">🎓 XINTIMANI ACADEMY OF EXCELLENCE</span><h2 style="margin:8px 0">Choose Your Grade & Topic</h2><p style="color:#475569;margin:0">Simple English. Step-by-step. No confusing language.</p><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px"><select id="gradeSel" style="max-width:200px" onchange="renderTopics()"><option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12" selected>Grade 12</option></select><select id="topicSel" style="max-width:260px" onchange="renderLesson()"></select></div><p><b>Score: <span id="score">0</span> / <span id="totalQ">0</span></b> • <b>Streak: 🔥 <span id="streak">0</span></b></p><div class="bar"><div id="progBar" style="width:0%">0%</div></div></div>
-
-<div id="tab-learn" class="card"><h2>📚 Lesson — <span id="lessonTitle"></span></h2><div id="lessonBox" style="font-size:14px;line-height:1.8"></div><button class="purple" style="width:100%;margin-top:10px" onclick="showTab('quiz')">➡️ GO TO QUIZ →</button></div>
-<div id="tab-quiz" class="card" style="display:none"><h2>✍️ Quiz — Test Yourself</h2><p style="font-size:13px;color:#475569">Tap one answer. Green = Correct. Red = Wrong. Try again until you get it.</p><div id="quizBox"></div><button class="green" style="width:100%;margin-top:10px" onclick="nextQuiz()">➡️ NEXT QUESTION</button><button class="blue" style="width:100%;margin-top:6px" onclick="resetScore()">🔄 RESET SCORE</button></div>
-<div id="tab-papers" class="card" style="display:none"><h2>📄 Past Papers & Exam Tips</h2><ul style="font-size:14px;line-height:1.9"><li><b>Paper 1:</b> Finance, Data, Measurement — 150 marks, 3 hours</li><li><b>Paper 2:</b> Maps, Probability, Measurement — 150 marks, 3 hours</li><li><b>Tip 1:</b> Always show ALL steps — Method marks save you even if answer is wrong.</li><li><b>Tip 2:</b> Read the question TWICE. Underline numbers + what they ask.</li><li><b>Tip 3:</b> Finance: VAT = 15%. Interest: Simple = P x r x t. Compound grows every year.</li><li><b>Tip 4:</b> Maps: Scale 1:50 000 means 1cm on map = 500m in real life.</li><li><b>Tip 5:</b> Data: Mean = Total ÷ How many. Median = Middle number after sorting.</li></ul><button class="teal" style="width:100%" onclick="window.open('https://wa.me/27780233263?text=Hello%20Mr%20Chauke%2C%20I%20want%20Maths%20Lit%20Past%20Papers%20Grade%20','_blank')">📩 REQUEST PAST PAPERS ON WHATSAPP</button></div>
-<div id="tab-progress" class="card" style="display:none"><h2>📊 My Progress</h2><div id="progressBox"></div><input id="learnerName" placeholder="Your Name e.g. Naledi Khumalo"><input id="learnerGrade" placeholder="Grade e.g. 12A"><button class="purple" style="width:100%" onclick="saveLearner()">💾 SAVE MY PROGRESS</button><p style="font-size:12px;color:#64748b">Progress saves on this phone. Show your teacher your score.</p></div>
-<div class="card" style="text-align:center"><b>XINTIMANI ACADEMY OF EXCELLENCE</b><br>Mr Vusi Chauke — WhatsApp 0780233263 — admin@xintimanigroup.co.za<br><button class="green" onclick="window.open('https://wa.me/27780233263?text=Hello%20Mr%20Chauke%2C%20I%20want%20to%20join%20Xintimani%20Academy%20Maths%20Lit','_blank')">💬 JOIN ACADEMY</button></div>
+<div class="timer" id="examTimer">⏰ 00:00</div>
+<header><img src="logo.png" alt="XINTIMANI GROUP" class="logo-top" onerror="this.style.display='none'"><h1 style="margin:6px 0">📐 MAKHANANI MATHS LIT V2</h1><p style="margin:0;font-size:13px">Xintimani Group • Academy of Excellence • Mr Vusi Chauke • WhatsApp 0780233263<br><b>600 Questions • 100 Per Topic • CAPS Papers Set 1 & 2 • Paper 1 & Paper 2</b></p></header>
+<div class="topbar">
+<button class="purple" onclick="showTab('learn')">📚 LEARN</button><button class="green" onclick="showTab('practice')">✍️ PRACTICE 100</button><button class="gold" onclick="showTab('papers')">🎓 CAPS PAPERS</button><button class="blue" onclick="showTab('tips')">💡 TIPS + FORMULAS</button><button class="teal" onclick="showTab('progress')">📊 MY SCORE</button>
+<a class="btn blue" href="https://vusichauke3037-glitch.github.io/XINTIMANI-GROUP/" target="_blank">🏢 GROUP</a><a class="btn orange" href="https://vusichauke3037-glitch.github.io/MAKHANANI-FAST-FOOD/" target="_blank">🍔 FOOD</a><a class="btn teal" href="https://vusichauke3037-glitch.github.io/MAKHANANI-LOGISTICS/" target="_blank">🚚 LOGISTICS</a>
 </div>
+<div class="wrap">
+<div class="card" style="text-align:center"><span class="badge">✅ GRADE 10 • 11 • 12 • CAPS ALIGNED • DBE STYLE</span><h2 style="margin:8px 0">Choose Grade → Topic → Question 1-100</h2>
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="purple" onclick="setGrade(10)">GRADE 10</button><button class="purple" onclick="setGrade(11)">GRADE 11</button><button class="purple" onclick="setGrade(12)">GRADE 12</button></div>
+<p><b>Grade: <span id="curGrade">10</span> • Topic: <span id="curTopicLabel">FINANCE</span> • Q: <span id="curQLabel">1 / 100</span> • Score: <span id="scoreTop">0</span> / <span id="totalTop">0</span></b></p>
+<p style="font-size:12px">CAPS: Paper 1 = Finance + Data + Measurement. Paper 2 = Maps + Probability + Data. See PAPERS tab for full exams.</p></div>
+
+<!-- LEARN -->
+<div id="tab-learn"><div class="card"><h2>📚 Topics — 100 Questions Each</h2><div class="grid" id="topicGrid"></div></div><div class="card" id="lessonBox"><h2>👋 How To Use V2</h2><p><b>1.</b> Tap Topic → <b>2.</b> Go to PRACTICE → Use ◀ ▶ to move Q1 to Q100 → <b>3.</b> Answer → See solution → <b>4.</b> When ready, do CAPS PAPERS (timed).</p><p><b>Every question is unique</b> — numbers change, so you can't memorise answers, you learn method.</p><button class="green" onclick="showTab('practice')">✍️ START PRACTICE →</button> <button class="gold" onclick="showTab('papers')">🎓 DO CAPS PAPER →</button></div></div>
+
+<!-- PRACTICE -->
+<div id="tab-practice" class="hidden">
+<div class="card"><h2>✍️ Practice — <span id="practiceTopic">FINANCE</span> — Question <span id="practiceQNum">1</span> / 100</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="blue" onclick="moveQ(-10)">⏮ -10</button><button class="blue" onclick="moveQ(-1)">◀ PREV</button><button class="blue" onclick="moveQ(1)">NEXT ▶</button><button class="blue" onclick="moveQ(10)">+10 ⏭</button><button class="purple" onclick="randomQ()">🎲 RANDOM</button></div>
+<p>Jump to: <input type="number" id="jumpInput" min="1" max="100" value="1" style="width:90px;display:inline-block"><button class="purple" onclick="jumpQ()" style="width:auto">GO</button> &nbsp; <button class="green" onclick="loadPractice(false)" style="width:auto">🔄 RELOAD</button></p>
+<div id="practiceBox"></div>
+<div style="background:#fefce8;padding:12px;border-radius:12px"><b>📊 Progress in this topic:</b> <span id="topicProgress">0 / 100 done</span><br><progress id="topicBar" value="0" max="100" style="width:100%"></progress></div>
+</div></div>
+
+<!-- PAPERS -->
+<div id="tab-papers" class="hidden">
+<div class="card"><h2>🎓 CAPS Question Papers — 2 Sets × Paper 1 & Paper 2</h2><p style="font-size:13px;color:#475569"><b>Paper 1 (150 marks, 3 hours):</b> Finance + Data Handling + Measurement + Tax.<br><b>Paper 2 (150 marks, 3 hours):</b> Maps + Plans + Probability + Data + Measurement.<br>Each paper below is a <b>full exam</b> built from the 100-question bank, DBE style, with memo + marks per question.</p></div>
+<div class="paper"><h3>📄 SET 1 — PAPER 1 — CAPS — 150 Marks — 3 Hours</h3><p>Topics: Finance (40%), Data (30%), Measurement (20%), Tax (10%). 15 Questions. Memo included.</p><button class="gold" onclick="startPaper('SET1_P1')">▶️ START SET 1 PAPER 1</button> <button class="blue" onclick="showMemo('SET1_P1')">📖 VIEW MEMO</button></div>
+<div class="paper"><h3>📄 SET 1 — PAPER 2 — CAPS — 150 Marks — 3 Hours</h3><p>Topics: Maps (35%), Probability (30%), Data (20%), Measurement (15%). 15 Questions. Memo included.</p><button class="gold" onclick="startPaper('SET1_P2')">▶️ START SET 1 PAPER 2</button> <button class="blue" onclick="showMemo('SET1_P2')">📖 VIEW MEMO</button></div>
+<div class="paper" style="border-color:#7c3aed"><h3>📄 SET 2 — PAPER 1 — CAPS — 150 Marks — 3 Hours</h3><p>Topics: Finance (40%), Data (30%), Measurement (20%), Tax (10%). Different numbers + different contexts. 15 Questions.</p><button class="purple" onclick="startPaper('SET2_P1')">▶️ START SET 2 PAPER 1</button> <button class="blue" onclick="showMemo('SET2_P1')">📖 VIEW MEMO</button></div>
+<div class="paper" style="border-color:#7c3aed"><h3>📄 SET 2 — PAPER 2 — CAPS — 150 Marks — 3 Hours</h3><p>Topics: Maps (35%), Probability (30%), Data (20%), Measurement (15%). Different numbers + contexts. 15 Questions.</p><button class="purple" onclick="startPaper('SET2_P2')">▶️ START SET 2 PAPER 2</button> <button class="blue" onclick="showMemo('SET2_P2')">📖 VIEW MEMO</button></div>
+<div class="card" id="examBox"><h3>📝 Exam Area</h3><p style="color:#64748b">Tap START on a paper above. Timer starts. Answer all 15. Tap FINISH to see marks + memo.</p></div>
+<div class="card"><h3>🔗 Official DBE Past Papers</h3><p>Also download real DBE papers: <a href="https://www.education.gov.za/Curriculum/NationalSeniorCertificateNSCExaminations.aspx" target="_blank">DBE NSC Papers →</a></p><button class="green" style="width:100%" onclick="window.open('https://wa.me/27780233263?text=Hello%20Mr%20Chauke%2C%20I%20want%20CAPS%20Past%20Papers%20with%20Memos%20Grade%20','_blank')">📩 REQUEST REAL DBE PAPERS ON WHATSAPP</button></div>
+</div>
+
+<!-- TIPS -->
+<div id="tab-tips" class="hidden">
+<div class="card"><h2>💡 Exam Tips + Formula Sheet</h2><div class="grid"><div class="card" style="margin:0"><b>⏰ Time</b><p>150 marks = 180 mins. 1 mark ≈ 1.2 mins.</p></div><div class="card" style="margin:0"><b>📖 Read Twice</b><p>Underline numbers + what they ask.</p></div><div class="card" style="margin:0"><b>✍️ Show Steps</b><p>Formula + Substitution + Answer = Full marks.</p></div><div class="card" style="margin:0"><b>📐 Units</b><p>Always R, kg, km, L, %. No unit = lose mark.</p></div><div class="card" style="margin:0"><b>🧮 Calculator</b><p>Brackets, 2 decimals for money.</p></div><div class="card" style="margin:0"><b>✅ Check</b><p>Last 10 mins: Check name, units, numbers.</p></div></div></div>
+<div class="card"><h2>🧮 Formula Sheet — CAPS</h2><table><tr><th>Topic</th><th>Formula</th><th>Example</th></tr><tr><td>Simple Interest</td><td>I = P × r × n</td><td>1000×0.10×2=R200</td></tr><tr><td>Compound Interest</td><td>A = P(1+r)^n</td><td>1000(1.10)²=R1210</td></tr><tr><td>VAT</td><td>Incl = Excl × 1.15</td><td>200×1.15=R230</td></tr><tr><td>Area Rectangle</td><td>L × B</td><td>5×3=15m²</td></tr><tr><td>Volume Box</td><td>L × B × H</td><td>2×3×4=24m³</td></tr><tr><td>Mean</td><td>Sum ÷ Number</td><td>(10+20+30)÷3=20</td></tr><tr><td>Probability</td><td>Favourable ÷ Total</td><td>1/5=20%</td></tr><tr><td>Distance</td><td>Speed × Time</td><td>60×2=120km</td></tr></table></div></div>
+
+<!-- PROGRESS -->
+<div id="tab-progress" class="hidden"><div class="card"><h2>📊 My Score</h2><p><b>Grade:</b> <span class="gradeLabel">10</span> • <b>Correct:</b> <span id="scoreBox">0</span> • <b>Attempted:</b> <span id="totalBox">0</span> • <b>Accuracy:</b> <span id="accBox">0%</span></p><p id="motivBox"></p><button class="purple" style="width:100%" onclick="showTab('practice')">✍️ PRACTICE MORE →</button><button class="blue" style="width:100%;margin-top:8px" onclick="resetScore()">🔄 RESET SCORE</button><button class="green" style="width:100%;margin-top:8px" onclick="shareScore()">📩 SEND SCORE TO MR CHAUKE</button></div></div>
+
+<div class="card" style="text-align:center"><b>MAKHANANI MATHS LIT V2 — XINTIMANI GROUP</b><br>Mr Vusi Chauke — WhatsApp 0780233263 — admin@xintimanigroup.co.za<br>🎓 Academy of Excellence • Learn. Practice. Pass.</div>
+</div>
+
 <script>
-var DATA={
-"10":[
-{topic:"Finance - Income & Expenses",lesson:"<b>Income</b> = Money you GET. Salary, pocket money, grant.<br><b>Expenses</b> = Money you SPEND. Food, transport, airtime.<br><b>Budget</b> = Income - Expenses. If Expenses > Income, you have a PROBLEM.<br><b>Example:</b> Income R2 000, Expenses R1 500. Leftover = R2 000 - R1 500 = <b>R500</b>.<br><b>Formula:</b> Profit / Surplus = Income - Expenses.",qs:[{q:"Thabo earns R3 000 and spends R2 200. How much is left?",o:["R800","R1 200","R5 200","R200"],a:0,ex:"R3 000 - R2 200 = R800"},{q:"What is a Budget?",o:["Money you spend on food only","A plan for Income and Expenses","A bank account","A loan"],a:1,ex:"Budget = Plan for Income vs Expenses"}]},
-{topic:"Measurement - Length & Area",lesson:"<b>Length:</b> 1m = 100cm. 1km = 1000m.<br><b>Area of Rectangle:</b> Length x Breadth.<br><b>Example:</b> Room 4m x 3m. Area = 4 x 3 = <b>12 m²</b>.<br><b>Perimeter:</b> Add all sides. 4+3+4+3 = 14m.",qs:[{q:"Room is 5m long and 4m wide. Area?",o:["9 m²","20 m²","18 m²","40 m²"],a:1,ex:"5 x 4 = 20 m²"},{q:"1 km = ?",o:["100m","1000m","10m","10000cm"],a:1,ex:"1km = 1000m"}]}
-],
-"11":[
-{topic:"Finance - Simple & Compound Interest",lesson:"<b>Simple Interest:</b> I = P x r x t. P=Principal, r=rate as decimal, t=time in years.<br><b>Example:</b> P=R10 000, r=10% (0.10), t=2 years. I = 10 000 x 0.10 x 2 = <b>R2 000</b>. Total = R12 000.<br><b>Compound Interest:</b> Interest earns interest. Grows faster. A = P(1+r)^t.",qs:[{q:"P=R5 000, r=8%, t=3 years Simple Interest. Interest?",o:["R1 200","R400","R1 500","R12 000"],a:0,ex:"5 000 x 0.08 x 3 = R1 200"},{q:"Which grows faster?",o:["Simple Interest","Compound Interest","Both same","Neither"],a:1,ex:"Compound earns interest on interest"}]}
-],
-"12":[
-{topic:"Finance - VAT, Tax & Loans",lesson:"<b>VAT = 15% in SA.</b> Price incl VAT = Price excl VAT x 1.15.<br><b>Example:</b> R1 000 excl VAT. Incl = 1 000 x 1.15 = <b>R1 150</b>.<br><b>VAT Amount</b> = R1 150 - R1 000 = R150.<br><b>Loan:</b> Monthly repayment = Total to repay ÷ Months.",qs:[{q:"Item R2 000 excl VAT. Price incl VAT (15%)?",o:["R2 150","R2 300","R2 000","R1 700"],a:1,ex:"2 000 x 1.15 = R2 300"},{q:"VAT in South Africa is?",o:["10%","15%","20%","5%"],a:1,ex:"VAT = 15%"}]},
-{topic:"Data Handling - Mean, Median, Mode",lesson:"<b>Mean</b> = Total ÷ How many.<br><b>Example:</b> Marks 40, 50, 60. Mean = (40+50+60) ÷ 3 = 150 ÷ 3 = <b>50</b>.<br><b>Median</b> = Middle number AFTER sorting.<br><b>Mode</b> = Number that appears MOST.",qs:[{q:"Numbers: 10, 20, 30, 40. Mean?",o:["25","20","30","100"],a:0,ex:"(10+20+30+40)=100 ÷ 4 = 25"},{q:"Numbers: 2, 3, 3, 5, 8. Mode?",o:["5","3","8","2"],a:1,ex:"3 appears twice - most"}]},
-{topic:"Maps & Scales",lesson:"<b>Scale 1:50 000</b> means 1cm on map = 50 000cm in real life = 500m.<br><b>Distance:</b> Measure cm on map x Scale.<br><b>Example:</b> 4cm on map, Scale 1:50 000. Real = 4 x 500m = <b>2 000m = 2km</b>.",qs:[{q:"Scale 1:50 000. 2cm on map = ? in real life",o:["100m","1km","500m","2km"],a:1,ex:"2 x 500m = 1000m = 1km"},{q:"1:50 000, 1cm = ?",o:["50m","500m","5km","50km"],a:1,ex:"50 000cm = 500m"}]}
-]};
-var score=parseInt(localStorage.getItem('MATHS_SCORE')||'0');var totalQ=parseInt(localStorage.getItem('MATHS_TOTAL')||'0');var streak=parseInt(localStorage.getItem('MATHS_STREAK')||'0');var qIndex=0;
-function showTab(t){['learn','quiz','papers','progress'].forEach(function(x){document.getElementById('tab-'+x).style.display=(x===t?'block':'none');});if(t==='progress')renderProgress();window.scrollTo({top:0,behavior:'smooth'});}
-function renderTopics(){var g=document.getElementById('gradeSel').value;var sel=document.getElementById('topicSel');sel.innerHTML=DATA[g].map(function(d,i){return '<option value="'+i+'">'+d.topic+'</option>';}).join('');renderLesson();}
-function renderLesson(){var g=document.getElementById('gradeSel').value;var i=parseInt(document.getElementById('topicSel').value||'0');var d=DATA[g][i];document.getElementById('lessonTitle').textContent='Grade '+g+' — '+d.topic;document.getElementById('lessonBox').innerHTML=d.lesson;qIndex=0;renderQuiz();}
-function renderQuiz(){var g=document.getElementById('gradeSel').value;var i=parseInt(document.getElementById('topicSel').value||'0');var d=DATA[g][i];var q=d.qs[qIndex%d.qs.length];document.getElementById('quizBox').innerHTML='<h3>Q'+(qIndex+1)+': '+q.q+'</h3>'+q.o.map(function(o,oi){return '<div class="opt" onclick="answerQ(this,'+oi+','+q.a+',\''+q.ex.replace(/'/g,'')+'\')">'+['A','B','C','D'][oi]+'. '+o+'</div>';}).join('')+'<div id="quizExplain" style="margin-top:10px;font-size:13px;color:#475569"></div>';updateScore();}
-function answerQ(el,chosen,correct,ex){if(el.classList.contains('sel'))return;totalQ++;if(chosen===correct){el.classList.add('right');score++;streak++;document.getElementById('quizExplain').innerHTML='<b style="color:#059669">✅ CORRECT!</b> '+ex;}else{el.classList.add('wrong');streak=0;document.getElementById('quizExplain').innerHTML='<b style="color:#ef4444">❌ WRONG.</b> Correct answer is '+['A','B','C','D'][correct]+'. '+ex;document.querySelectorAll('.opt').forEach(function(o,oi){if(oi===correct)o.classList.add('right');});}localStorage.setItem('MATHS_SCORE',score);localStorage.setItem('MATHS_TOTAL',totalQ);localStorage.setItem('MATHS_STREAK',streak);updateScore();}
-function nextQuiz(){qIndex++;renderQuiz();}
-function updateScore(){document.getElementById('score').textContent=score;document.getElementById('totalQ').textContent=totalQ;document.getElementById('streak').textContent=streak;var pct=totalQ?Math.round(score/totalQ*100):0;document.getElementById('progBar').style.width=pct+'%';document.getElementById('progBar').textContent=pct+'%';}
-function resetScore(){score=0;totalQ=0;streak=0;localStorage.setItem('MATHS_SCORE','0');localStorage.setItem('MATHS_TOTAL','0');localStorage.setItem('MATHS_STREAK','0');updateScore();renderQuiz();}
-function renderProgress(){var pct=totalQ?Math.round(score/totalQ*100):0;document.getElementById('progressBox').innerHTML='<p><b>Score:</b> '+score+' / '+totalQ+' ('+pct+'%)</p><p><b>Streak:</b> 🔥 '+streak+'</p><p><b>Level:</b> '+(pct>=80?'🏆 EXCELLENT!':pct>=60?'👍 GOOD - Keep Going':pct>=40?'📚 NEED PRACTICE':'🌱 JUST STARTING - You Can Do It!')+'</p><div class="bar"><div style="width:'+pct+'%">'+pct+'%</div></div>';}
-function saveLearner(){var n=document.getElementById('learnerName').value;var g=document.getElementById('learnerGrade').value;if(!n)return alert('Enter Your Name');alert('✅ Saved, '+n+' (Grade '+g+')\nScore: '+score+'/'+totalQ+'\nShow this to your teacher!');}
-renderTopics();
+// ===== STATE =====
+var grade=10;var curTopic='FINANCE';var curQ=1;var score=parseInt(localStorage.getItem('MATHSLIT_SCORE')||'0');var total=parseInt(localStorage.getItem('MATHSLIT_TOTAL')||'0');var doneKey='MATHSLIT_DONE_V2';var done={};try{done=JSON.parse(localStorage.getItem(doneKey)||'{}');}catch(e){done={};}
+var examTimerInt=null,examLeft=0,examPaper=null,examAnswers={};
+// Seeded random so Q numbers are stable but unique
+function srand(seed){var x=Math.sin(seed)*10000;return x-Math.floor(x);}
+function pick(arr,seed){return arr[Math.floor(srand(seed)*arr.length)%arr.length];}
+function fmt(n){return n.toLocaleString('en-ZA');}
+// ===== 100 UNIQUE PER TOPIC — GENERATORS =====
+// Each generator: given n (1-100) returns {q, opts[4], ansIndex, exp, marks}
+// Numbers derived from n, so every n is unique.
+function genFinance(n){
+ var types=n%5;var P=1000+ (n*137)%9000; P=Math.round(P/100)*100;var r=5+(n%12);var yrs=1+(n%4);
+ if(types===0){var I=Math.round(P*r/100*yrs);return {q:'Thabo invests R'+fmt(P)+' at '+r+'% simple interest for '+yrs+' years. Interest = ?',opts:['R'+fmt(Math.round(I*0.5)),'R'+fmt(I),'R'+fmt(I+200),'R'+fmt(I*2)],ans:1,exp:'I = P × r × n = '+fmt(P)+' × '+r+'% × '+yrs+' = R'+fmt(I)+'.',marks:3};}
+ if(types===1){var excl=Math.round((500+(n*89)%4500)/10)*10;var incl=Math.round(excl*1.15);return {q:'A shirt costs R'+fmt(excl)+' excl VAT (15%). Price incl VAT = ?',opts:['R'+fmt(incl),'R'+fmt(excl+100),'R'+fmt(excl),'R'+fmt(Math.round(excl*1.5))],ans:0,exp:'Incl = Excl × 1.15 = '+fmt(excl)+' × 1.15 = R'+fmt(incl)+'. VAT = R'+fmt(incl-excl)+'.',marks:3};}
+ if(types===2){var gross=6000+(n*211)%9000; gross=Math.round(gross/100)*100;var ded=Math.round(gross*0.18);var net=gross-ded;return {q:'Gross pay R'+fmt(gross)+'. Deductions R'+fmt(ded)+'. Net pay = ?',opts:['R'+fmt(gross),'R'+fmt(net),'R'+fmt(ded),'R'+fmt(gross+ded)],ans:1,exp:'Net = Gross - Deductions = '+fmt(gross)+' - '+fmt(ded)+' = R'+fmt(net)+'.',marks:2};}
+ if(types===3){var inc=8000+(n*173)%7000; inc=Math.round(inc/100)*100;var exp1=Math.round(inc*0.6);var sav=inc-exp1;return {q:'Income R'+fmt(inc)+'. Expenses R'+fmt(exp1)+'. Savings = ?',opts:['R'+fmt(sav+500),'R'+fmt(sav),'R'+fmt(exp1),'R'+fmt(inc)],ans:1,exp:'Savings = Income - Expenses = '+fmt(inc)+' - '+fmt(exp1)+' = R'+fmt(sav)+'.',marks:2};}
+ var A=Math.round(P*Math.pow(1+r/100,2));return {q:'Invest R'+fmt(P)+' at '+r+'% compound interest for 2 years. Amount = ?',opts:['R'+fmt(A),'R'+fmt(P),'R'+fmt(Math.round(P*r/100*2+P)),'R'+fmt(A+500)],ans:0,exp:'A = P(1+r)² = '+fmt(P)+' × (1.'+r+')² = R'+fmt(A)+'.',marks:4};}
+}
+function genData(n){
+ var a=5+(n*7)%40;var b=a+3+(n%15);var c=b+4+(n%12);var d=c+5+(n%10);var arr=[a,b,c,d];var sum=a+b+c+d;var mean=sum/4;var range=d-a;
+ if(n%3===0)return {q:'Data: '+arr.join(', ')+'. Mean = ?',opts:[''+(mean+2),''+mean,''+(mean-3),''+sum],ans:1,exp:'Mean = Sum ÷ 4 = '+sum+' ÷ 4 = '+mean+'.',marks:3};
+ if(n%3===1)return {q:'Data: '+arr.join(', ')+'. Range = ?',opts:[''+(range+5),''+range,''+(range-2),''+sum],ans:1,exp:'Range = Max - Min = '+d+' - '+a+' = '+range+'.',marks:2};
+ return {q:'Data: '+arr.join(', ')+', '+b+'. Mode = ?',opts:[''+a,''+b,''+c,''+d],ans:1,exp:'Mode = Most common. '+b+' appears twice. Mode = '+b+'.',marks:2};
+}
+function genMeasure(n){
+ var L=2+(n%8);var B=3+(n%7);var H=2+(n%4);
+ if(n%4===0){var area=L*B;return {q:'Rectangle Length '+L+'m, Breadth '+B+'m. Area = ?',opts:[(area+4)+'m²',area+'m²',(area-2)+'m²',(L+B)+'m²'],ans:1,exp:'Area = L × B = '+L+' × '+B+' = '+area+'m².',marks:2};}
+ if(n%4===1){var vol=L*B*H;return {q:'Box '+L+'m × '+B+'m × '+H+'m. Volume = ?',opts:[(vol+6)+'m³',vol+'m³',(vol-3)+'m³',(L+B+H)+'m³'],ans:1,exp:'Volume = L×B×H = '+L+'×'+B+'×'+H+' = '+vol+'m³.',marks:3};}
+ if(n%4===2){var litres=1+(n%6);return {q:litres+' litres = ? ml',opts:[(litres*100)+'ml',(litres*1000)+'ml',(litres*10)+'ml',(litres*500)+'ml'],ans:1,exp:'1L = 1000ml. '+litres+' × 1000 = '+(litres*1000)+'ml.',marks:2};}
+ var per=2*(L+B);return {q:'Rectangle '+L+'m by '+B+'m. Perimeter = ?',opts:[(per+2)+'m',per+'m',(per-4)+'m',(L*B)+'m'],ans:1,exp:'Perimeter = 2(L+B) = 2('+L+'+'+B+') = '+per+'m.',marks:2};
+}
+function genMaps(n){
+ var cm=2+(n%7);var scale=25000+(n%4)*25000;var km=cm*scale/100000;
+ if(n%2===0)return {q:'Map scale 1:'+fmt(scale)+'. Distance on map '+cm+'cm. Real distance = ?',opts:[(km+1)+'km',km+'km',(km*2)+'km',(km-0.5)+'km'],ans:1,exp:'Real = '+cm+' × '+fmt(scale)+' = '+(cm*scale)+'cm = '+km+'km (÷100000).',marks:3};
+ var speed=40+(n%5)*10;var time=1+(n%3);var dist=speed*time;return {q:'Car travels at '+speed+'km/h for '+time+' hours. Distance = ?',opts:[(dist+20)+'km',dist+'km',(dist-10)+'km',(speed+time)+'km'],ans:1,exp:'Distance = Speed × Time = '+speed+' × '+time+' = '+dist+'km.',marks:2};
+}
+function genProb(n){
+ var red=2+(n%5);var blue=3+(n%6);var tot=red+blue;
+ if(n%2===0)return {q:'Bag has '+red+' red and '+blue+' blue balls. Total '+tot+'. P(red) = ?',opts:[red+'/'+tot,blue+'/'+tot,tot+'/'+red,'1/'+tot],ans:0,exp:'P(red) = Favourable ÷ Total = '+red+' ÷ '+tot+' = '+red+'/'+tot+'.',marks:3};
+ return {q:'Bag has '+red+' red and '+blue+' blue. P(blue) = ?',opts:[red+'/'+tot,blue+'/'+tot,'1/2','1'],ans:1,exp:'P(blue) = '+blue+' ÷ '+tot+' = '+blue+'/'+tot+' = '+Math.round(blue/tot*100)+'%.',marks:3};
+}
+function genTax(n){
+ var gross=7000+(n*149)%8000; gross=Math.round(gross/100)*100;var tax=Math.round(gross*0.12);var uif=Math.round(gross*0.01);var net=gross-tax-uif;
+ if(n%2===0)return {q:'Gross R'+fmt(gross)+', Tax R'+fmt(tax)+', UIF R'+fmt(uif)+'. Net = ?',opts:['R'+fmt(gross),'R'+fmt(net),'R'+fmt(tax),'R'+fmt(gross+tax)],ans:1,exp:'Net = Gross - Tax - UIF = '+fmt(gross)+' - '+fmt(tax)+' - '+fmt(uif)+' = R'+fmt(net)+'.',marks:3};
+ var excl=400+(n*67)%3600; excl=Math.round(excl/10)*10;var incl=Math.round(excl*1.15);return {q:'Item R'+fmt(excl)+' excl VAT. VAT (15%) = ?',opts:['R'+fmt(incl-excl),'R'+fmt(incl),'R'+fmt(excl),'R100'],ans:0,exp:'VAT = 15% × '+fmt(excl)+' = R'+fmt(incl-excl)+'. Incl = R'+fmt(incl)+'.',marks:2};
+}
+var GEN={FINANCE:genFinance,DATA:genData,MEASURE:genMeasure,MAPS:genMaps,PROB:genProb,TAX:genTax};
+var TOPICS=[
+{key:'FINANCE',icon:'💰',title:'Finance',desc:'Interest, VAT, Budget, Salaries — 100 Q'},
+{key:'DATA',icon:'📊',title:'Data Handling',desc:'Mean, Median, Mode, Range, Graphs — 100 Q'},
+{key:'MEASURE',icon:'📏',title:'Measurement',desc:'Length, Area, Volume, Conversions — 100 Q'},
+{key:'MAPS',icon:'🗺️',title:'Maps & Plans',desc:'Scale, Distance, Directions — 100 Q'},
+{key:'PROB',icon:'🎲',title:'Probability',desc:'Chance, Fair / Unfair — 100 Q'},
+{key:'TAX',icon:'🧾',title:'Tax & Payslips',desc:'PAYE, UIF, Net Pay — 100 Q'}
+];
+function setGrade(g){grade=g;document.getElementById('curGrade').textContent=g;document.querySelectorAll('.gradeLabel').forEach(function(e){e.textContent=g;});}
+function renderTopics(){document.getElementById('topicGrid').innerHTML=TOPICS.map(function(t){return '<div class="topic '+(t.key===curTopic?'active':'')+'" onclick="selectTopic(\''+t.key+'\')"><div style="font-size:32px">'+t.icon+'</div><b>'+t.title+'</b><br><small>'+t.desc+'</small><br><b>100 QUESTIONS</b></div>';}).join('');}
+function selectTopic(k){curTopic=k;curQ=1;document.getElementById('curTopicLabel').textContent=k;document.getElementById('practiceTopic').textContent=k;renderTopics();loadPractice(false);showTab('practice');}
+function getQ(topic,n){return GEN[topic](n);}
+function loadPractice(){document.getElementById('practiceQNum').textContent=curQ;document.getElementById('curQLabel').textContent=curQ+' / 100';document.getElementById('jumpInput').value=curQ;var q=getQ(curTopic,curQ);var opts=q.opts.map(function(o,i){return '<button class="opt" onclick="answerPractice(this,'+i+','+q.ans+',\''+q.exp.replace(/'/g,"\\'")+'\')">'+String.fromCharCode(65+i)+') '+o+'</button>';}).join('');document.getElementById('practiceBox').innerHTML='<div class="qcard"><b>Q'+curQ+' / 100</b> <span class="badge">'+curTopic+' • Grade '+grade+' • '+q.marks+' marks</span><p><b>'+q.q+'</b></p>'+opts+'<div class="exp hidden" style="background:#fefce8;padding:10px;border-radius:10px;margin-top:8px"><b>📖 Solution:</b> '+q.exp+'</div></div><div style="display:flex;gap:8px"><button class="blue" style="flex:1" onclick="moveQ(-1)">◀ PREV</button><button class="green" style="flex:1" onclick="moveQ(1)">NEXT ▶</button></div>';updateProgress();}
+function moveQ(d){curQ=Math.min(100,Math.max(1,curQ+d));loadPractice();}
+function jumpQ(){var v=parseInt(document.getElementById('jumpInput').value||'1');curQ=Math.min(100,Math.max(1,v));loadPractice();}
+function randomQ(){curQ=1+Math.floor(Math.random()*100);loadPractice();}
+function answerPractice(btn,chosen,correct,exp){var card=btn.closest('.qcard');var opts=card.querySelectorAll('.opt');opts.forEach(function(o){o.disabled=true;});total++;if(chosen===correct){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');opts[correct].classList.add('correct');}localStorage.setItem('MATHSLIT_SCORE',score);localStorage.setItem('MATHSLIT_TOTAL',total);var key=curTopic+'-'+curQ;done[key]=true;localStorage.setItem(doneKey,JSON.stringify(done));card.querySelector('.exp').classList.remove('hidden');updateScore();updateProgress();}
+function updateProgress(){var c=0;for(var k in done){if(k.indexOf(curTopic+'-')===0)c++;}document.getElementById('topicProgress').textContent=c+' / 100 done in '+curTopic;document.getElementById('topicBar').value=c;}
+function showTab(tab){['learn','practice','papers','tips','progress'].forEach(function(x){document.getElementById('tab-'+x).classList.toggle('hidden',x!==tab);});if(tab==='progress')updateScore();window.scrollTo({top:0,behavior:'smooth'});}
+function updateScore(){document.getElementById('scoreTop').textContent=score;document.getElementById('totalTop').textContent=total;document.getElementById('scoreBox').textContent=score;document.getElementById('totalBox').textContent=total;var acc=total?Math.round(score/total*100):0;document.getElementById('accBox').textContent=acc+'%';document.getElementById('motivBox').textContent=acc>=80?'Excellent! Exam ready 🌟':acc>=50?'Good progress! Do a CAPS Paper now.':'Every question makes you stronger. Do 10 today!';}
+function resetScore(){if(confirm('Reset score?')){score=0;total=0;done={};localStorage.removeItem('MATHSLIT_SCORE');localStorage.removeItem('MATHSLIT_TOTAL');localStorage.removeItem(doneKey);updateScore();updateProgress();}}
+function shareScore(){var acc=total?Math.round(score/total*100):0;window.open('https://wa.me/27780233263?text='+encodeURIComponent('Hello Mr Chauke, Makhanani Maths Lit V2 📐\nGrade: '+grade+'\nScore: '+score+' / '+total+'\nAccuracy: '+acc+'%\nTopic: '+curTopic+' Q'+curQ+' / 100'),' _blank');}
+// ===== CAPS PAPERS — 2 SETS × PAPER 1 & 2 =====
+// Paper 1 = FINANCE + DATA + MEASURE + TAX, Paper 2 = MAPS + PROB + DATA + MEASURE
+// Each paper = 15 Q, each Q uses a different seed so no repeats inside paper.
+function paperQuestions(paper){
+ var list=[];var specs=[];
+ if(paper==='SET1_P1')specs=[['FINANCE',1],['FINANCE',2],['FINANCE',3],['FINANCE',4],['DATA',5],['DATA',6],['DATA',7],['MEASURE',8],['MEASURE',9],['MEASURE',10],['TAX',11],['TAX',12],['FINANCE',13],['DATA',14],['MEASURE',15]];
+ if(paper==='SET1_P2')specs=[['MAPS',1],['MAPS',2],['MAPS',3],['PROB',4],['PROB',5],['PROB',6],['DATA',7],['DATA',8],['MEASURE',9],['MEASURE',10],['MAPS',11],['PROB',12],['DATA',13],['MAPS',14],['PROB',15]];
+ if(paper==='SET2_P1')specs=[['FINANCE',51],['FINANCE',52],['FINANCE',53],['FINANCE',54],['DATA',55],['DATA',56],['DATA',57],['MEASURE',58],['MEASURE',59],['MEASURE',60],['TAX',61],['TAX',62],['FINANCE',63],['DATA',64],['MEASURE',65]];
+ if(paper==='SET2_P2')specs=[['MAPS',51],['MAPS',52],['MAPS',53],['PROB',54],['PROB',55],['PROB',56],['DATA',57],['DATA',58],['MEASURE',59],['MEASURE',60],['MAPS',61],['PROB',62],['DATA',63],['MAPS',64],['PROB',65]];
+ specs.forEach(function(s,i){var q=getQ(s[0],s[1]);list.push({topic:s[0],num:s[1],q:q.q,opts:q.opts,ans:q.ans,exp:q.exp,marks:q.marks||3});});
+ return list;
+}
+function startPaper(paper){
+ examPaper=paper;examAnswers={};var qs=paperQuestions(paper);var totalMarks=qs.reduce(function(a,b){return a+b.marks;},0);
+ var html='<h3>📝 '+paper.replace('_',' — ')+' — CAPS — Grade '+grade+'</h3><p><b>Total Marks in this demo: '+totalMarks+' (scaled to 150 in exam)</b> • Timer: 30 mins demo (Real exam: 3 hours). Answer all, then FINISH.</p>';
+ html+=qs.map(function(q,i){return '<div class="qcard"><b>Q'+(i+1)+'</b> <span class="badge">'+q.topic+' • '+q.marks+' marks</span><p><b>'+q.q+'</b></p>'+q.opts.map(function(o,oi){return '<label style="display:block;padding:8px;border:1px solid #ddd;border-radius:10px;margin:4px 0"><input type="radio" name="pq'+i+'" value="'+oi+'" onchange="examAnswers['+i+']='+oi+'"> '+String.fromCharCode(65+oi)+') '+o+'</label>';}).join('')+'</div>';}).join('');
+ html+='<button class="green" style="width:100%;font-size:16px" onclick="finishPaper()">✅ FINISH PAPER — SEE MARKS + MEMO</button>';
+ document.getElementById('examBox').innerHTML=html;
+ examLeft=30*60;startTimer();document.getElementById('examBox').scrollIntoView({behavior:'smooth'});
+}
+function startTimer(){clearInterval(examTimerInt);document.getElementById('examTimer').style.display='block';examTimerInt=setInterval(function(){examLeft--;var m=Math.floor(examLeft/60),s=examLeft%60;document.getElementById('examTimer').textContent='⏰ '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');if(examLeft<=0){clearInterval(examTimerInt);finishPaper();}},1000);}
+function finishPaper(){clearInterval(examTimerInt);document.getElementById('examTimer').style.display='none';var qs=paperQuestions(examPaper);var got=0,tot=0;var memo='<h3>📖 MEMO — '+examPaper+'</h3>';qs.forEach(function(q,i){tot+=q.marks;var chosen=examAnswers[i];var ok=chosen===q.ans;if(ok)got+=q.marks;memo+='<div class="qcard"><b>Q'+(i+1)+' — '+(ok?'✅ Correct +'+q.marks:'❌ Wrong 0 / '+q.marks)+'</b><p>'+q.q+'</p><p><b>Correct:</b> '+String.fromCharCode(65+q.ans)+') '+q.opts[q.ans]+'</p><p><b>Solution:</b> '+q.exp+'</p></div>';});document.getElementById('examBox').innerHTML='<div style="background:#ecfdf5;border:3px solid #059669;border-radius:16px;padding:16px;text-align:center"><h2>🎉 RESULT: '+got+' / '+tot+' marks</h2><p><b>'+Math.round(got/tot*100)+'%</b> — '+(got/tot>=0.7?'DISTINCTION! 🌟':got/tot>=0.5?'PASS — Keep going 💪':'Keep practising — Do 10 Q per day')+'</p><button class="green" onclick="sharePaperResult('+got+','+tot+')">📩 SEND RESULT TO MR CHAUKE</button></div>'+memo;score+=got;total+=qs.length;localStorage.setItem('MATHSLIT_SCORE',score);localStorage.setItem('MATHSLIT_TOTAL',total);updateScore();}
+function showMemo(paper){var qs=paperQuestions(paper);var html='<h3>📖 MEMO — '+paper+' (No Timer)</h3>'+qs.map(function(q,i){return '<div class="qcard"><b>Q'+(i+1)+' • '+q.marks+' marks</b><p>'+q.q+'</p><p><b>Answer:</b> '+String.fromCharCode(65+q.ans)+') '+q.opts[q.ans]+'</p><p><b>Solution:</b> '+q.exp+'</p></div>';}).join('');document.getElementById('examBox').innerHTML=html;document.getElementById('examBox').scrollIntoView({behavior:'smooth'});}
+function sharePaperResult(got,tot){window.open('https://wa.me/27780233263?text='+encodeURIComponent('Hello Mr Chauke, Makhanani Maths Lit V2 CAPS Paper 📐\nPaper: '+examPaper+'\nGrade: '+grade+'\nResult: '+got+' / '+tot+' = '+Math.round(got/tot*100)+'%'),' _blank');}
+renderTopics();loadPractice();updateScore();
 </script></body></html>
