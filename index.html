@@ -22,13 +22,10 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 </style></head>
 <body>
 <div class="timer" id="examTimer">00:00</div>
-
-<!-- PARENT PORTAL VIEW - Shows when ?learner=ID & ?view=parent OR ?parent=1 -->
 <div id="parentView" style="display:none">
   <header><h1>🎓 MAKHANANI ACADEMY</h1><p>📚 PARENT REPORT — LIVE</p></header>
   <div class="wrap"><div id="parentReport"></div><div class="card" style="text-align:center"><b>MAKHANANI ACADEMY</b><br>Mr Vusi Chauke — 0780233263<br><button class="green" onclick="location.href=location.href.split('?')[0]">🎓 OPEN PRACTICE APP</button></div></div>
 </div>
-
 <div id="mainView">
 <header><h1>🎓 MAKHANANI ACADEMY</h1><p style="font-size:13px">Xintimani Group • Academy of Excellence • Founder Mr Vusi Chauke • WhatsApp 0780233263<br><b>Learn. Practice. Pass. — 1,000 Questions • 4 Subjects • Grade 8-12 • CAPS • ☁️ CLOUD TRACKING ON</b></p>
 <div id="currentLearnerBar" style="background:#fff;color:#0a1f4d;padding:10px;border-radius:12px;margin-top:10px;font-weight:800">👤 No Learner Selected — Tap LEARNER TRACKING below</div>
@@ -50,7 +47,7 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="tab-principal" class="hidden">
   <div class="card" style="border:3px solid #dc2626">
     <h2>👑 PRINCIPAL DASHBOARD — Mr Vusi Chauke Only</h2>
-    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one. This tab is for you only.</p>
+    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one.</p>
     <div id="principalLoginBox">
       <input id="principalPin" type="password" inputmode="numeric" placeholder="Enter Principal PIN — 0780">
       <button class="red" style="width:100%" onclick="principalLogin()">👑 UNLOCK PRINCIPAL DASHBOARD</button>
@@ -66,6 +63,21 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
       <p id="principalWeekly"></p>
       <div id="principalLearners"></div>
       <button class="green" style="width:100%" onclick="exportPrincipalReport()">📩 EXPORT PRINCIPAL WEEKLY REPORT TO WHATSAPP</button>
+      <button class="gold" style="width:100%;margin-top:10px" onclick="generateAutoReports()">🤖 GENERATE WEEKLY AUTO-REPORTS — ALL TEACHERS + ALL PARENTS</button>
+      <div id="autoReportsBox" style="display:none;margin-top:12px;border:3px dashed #d4af37;border-radius:14px;padding:12px;background:#fffbeb">
+        <h3>🤖 Weekly Auto-Reports — Ready To Send</h3>
+        <p id="autoProgress" style="font-size:12px;font-weight:800"></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+          <button class="blue" onclick="filterAutoReports('ALL')">ALL</button>
+          <button class="dark" onclick="filterAutoReports('PRINCIPAL')">👑 PRINCIPAL ONLY</button>
+          <button class="dark" onclick="filterAutoReports('TEACHER')">👩🏽‍🏫 TEACHERS ONLY</button>
+          <button class="dark" onclick="filterAutoReports('PARENT')">👨‍👩‍👧 PARENTS ONLY</button>
+          <button class="dark" onclick="filterAutoReports('NEEDS_HELP')">⚠️ NEEDS HELP ONLY</button>
+          <button class="dark" onclick="filterAutoReports('NEVER')">😴 NEVER PRACTISED ONLY</button>
+        </div>
+        <div id="autoReportsList"></div>
+        <button class="dark" style="width:100%;margin-top:10px" onclick="markAllAutoSent()">✅ MARK ALL AS SENT (Clear List)</button>
+      </div>
       <button class="dark" style="width:100%;margin-top:8px" onclick="principalLogout()">🚪 LOCK PRINCIPAL DASHBOARD</button>
     </div>
   </div>
@@ -75,7 +87,7 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="tab-marks" class="hidden">
   <div class="card" style="border:3px solid #0d9488">
     <h2>📝 SCHOOL MARKS — Real Test / Exam Marks</h2>
-    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school. It shows together with app practice in ONE report for parent + principal.</p>
+    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school. It shows together with app practice in ONE report.</p>
     <label><b>Learner</b></label><select id="markLearner"></select>
     <select id="markSubject"><option>Mathematics</option><option>Maths Lit</option><option>Physical Sciences</option><option>Natural Sciences</option><option>English</option><option>isiZulu</option><option>Afrikaans</option><option>Life Skills</option><option>Social Sciences</option><option>Technology</option></select>
     <select id="markTerm"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select>
@@ -251,7 +263,7 @@ try{
     document.getElementById('mainView').style.display='none';
     document.getElementById('parentView').style.display='block';
   } else {
-    renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions + Cloud + Teachers + Principal + Marks + Parent Portal';
+    renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions + Cloud + Teachers + Principal + Marks + Parent + AUTO Reports';
   }
 }catch(err){document.getElementById('statusLine').textContent='❌ Error: '+err.message;document.getElementById('statusLine').style.color='#dc2626';}
 </script>
@@ -298,7 +310,6 @@ onSnapshot(query(logCol, orderBy("createdAt","desc")), snap=>{
   teacherLog = snap.docs.map(d=>({id:d.id, ...d.data()}));
   if(window._principalUnlocked) renderPrincipal();
 });
-// TEACHERS
 var teachers=[]; var currentTeacher=null;
 try{ currentTeacher = JSON.parse(localStorage.getItem('ACADEMY_TEACHER')||'null'); }catch(e){ currentTeacher=null; }
 onSnapshot(query(teachersCol, orderBy("createdAt","desc")), snap=>{
@@ -359,7 +370,6 @@ window.sendTeacherInvite = (id)=>{
   const msg=`👩🏽‍🏫 MAKHANANI ACADEMY — TEACHER INVITE\n\nHi ${t.name},\nYou are now a Monitoring Teacher.\nGrades: ${(t.grades||[]).join(", ")}\nSubjects: ${t.subjects||"-"}\nPIN: ${t.pin}\n\nOpen:\nhttps://vusichauke3037-glitch.github.io/MAKHANANI-ACADEMY/\nTap TEACHERS → Select your name → Enter PIN.\n\nMr Vusi Chauke — 078 023 3263`;
   if(phone) window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank'); else alert(msg);
 };
-// PRINCIPAL
 window._principalUnlocked=false;
 window.principalLogin = ()=>{
   const pin=document.getElementById("principalPin").value.trim();
@@ -393,11 +403,122 @@ window.renderPrincipal = function(){
   document.getElementById("principalWeekly").innerHTML=`Top learners by Combined (App + School):`;
   document.getElementById("principalLearners").innerHTML=sorted.map(l=>{ const c=learnerCombined(l.id); const acc=l.total?Math.round(l.score/l.total*100):0; return `<div class="qcard"><b>${l.name}</b> — ${l.grade}<br><span class="badge">App: ${acc}%</span> ${c.schoolAvg!==null?'<span class="badge" style="background:#ccfbf1;color:#115e59">School: '+Math.round(c.schoolAvg)+'%</span>':''} ${c.combined!==null?'<span class="badge" style="background:#fef3c7;color:#92400e">Combined: '+c.combined+'%</span>':''}<br><small>Last: ${l.lastActive||"-"}</small></div>`; }).join('')||'<p>No learners.</p>';
 };
+// ===== WEEKLY AUTO REPORTS =====
+var autoFilter = 'ALL';
+var autoSent = {};
+try{ autoSent = JSON.parse(localStorage.getItem('ACADEMY_AUTO_SENT')||'{}'); }catch(e){ autoSent={}; }
+function getWeekLabel(){ const d = new Date(); const day = d.getDate(), month = d.toLocaleString('en-ZA',{month:'long'}), year = d.getFullYear(); return `Week of ${day} ${month} ${year}`; }
+function buildTeacherReport(t){
+  const my = learners.filter(l=>(t.grades||[]).includes(l.grade));
+  const practised = my.filter(l=>l.total>0).length;
+  const pass = my.filter(l=>{const c=learnerCombined(l.id); return c.combined!==null && c.combined>=50;}).length;
+  const needs = my.filter(l=>{const c=learnerCombined(l.id); return c.combined!==null && c.combined<50;});
+  const never = my.filter(l=>!l.total);
+  let txt = `👩🏽‍🏫 MAKHANANI ACADEMY — WEEKLY TEACHER REPORT\n\nTeacher: ${t.name}\nGrades: ${(t.grades||[]).join(", ")}\n${getWeekLabel()}\n\n📊 SUMMARY\nMy Learners: ${my.length}\nPractised: ${practised}\nNever Practised: ${never.length}\nPassing (Combined 50%+): ${pass}\nNeeds Help: ${needs.length}\nSchool Marks Entered: ${schoolMarks.filter(m=>my.some(l=>l.id===m.learnerId)).length}\n\n✅ TOP 3\n`;
+  const top = my.slice().sort((a,b)=>(learnerCombined(b.id).combined||-1)-(learnerCombined(a.id).combined||-1)).slice(0,3);
+  top.forEach(l=>{ const c=learnerCombined(l.id); txt += `${l.name} — ${l.grade} — Combined: ${c.combined!==null?c.combined+'%':'-'} — App: ${l.total?Math.round(l.score/l.total*100):0}% — School: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'-'}\n`; });
+  txt += `\n⚠️ NEEDS HELP\n`;
+  if(!needs.length) txt += `None — Great job!\n`;
+  needs.forEach(l=>{ const c=learnerCombined(l.id); txt += `${l.name} — ${l.grade} — Combined: ${c.combined}% — Last: ${l.lastActive||"-"}\n`; });
+  txt += `\n😴 NEVER PRACTISED\n`;
+  if(!never.length) txt += `None — Everyone practised!\n`;
+  never.forEach(l=>{ txt += `${l.name} — ${l.grade} — Parent: ${l.parent||"-"}\n`; });
+  txt += `\nPlease follow up with Needs Help + Never Practised learners this week.\n\nMr Vusi Chauke — 078 023 3263\nhttps://vusichauke3037-glitch.github.io/MAKHANANI-ACADEMY/`;
+  return txt;
+}
+function buildParentReport(l){
+  const c = learnerCombined(l.id);
+  const acc = l.total?Math.round(l.score/l.total*100):0;
+  const parentLink = location.href.split('?')[0]+`?learner=${l.id}&view=parent`;
+  const verdict = c.combined===null ? `No activity yet — please start practising.` : c.combined>=80 ? `🌟 Excellent! Distinction level.` : c.combined>=50 ? `✅ Passing — keep practising 10 questions per day.` : `⚠️ Needs support — please speak to teacher.`;
+  let txt = `👨‍👩‍👧 MAKHANANI ACADEMY — WEEKLY PARENT REPORT\n\nLearner: ${l.name}\nGrade: ${l.grade}\n${getWeekLabel()}\n\n📊 THIS WEEK\nApp Practice: ${l.score} / ${l.total} = ${acc}%\nSchool Marks Avg: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'% ( '+c.schoolMarks.length+' marks )':'No school marks yet'}\nCombined Score: ${c.combined!==null?c.combined+'%':'No data yet'}\nLast Active: ${l.lastActive||"-"}\n\n${verdict}\n\n`;
+  if(c.schoolMarks.length){ txt += `📝 SCHOOL MARKS\n`; c.schoolMarks.slice(0,5).forEach(m=>{ txt += `${m.subject} — ${m.term} ${m.testType}: ${m.score}/${m.total} = ${Math.round(m.pct)}%\n`; }); txt += `\n`; }
+  txt += `👀 View FULL Live Report (no login):\n${parentLink}\n\nMr Vusi Chauke — 078 023 3263`;
+  return txt;
+}
+function buildPrincipalReport(){
+  const totalLearners=learners.length;
+  const practised=learners.filter(l=>l.total>0).length;
+  const never=totalLearners-practised;
+  const pass=learners.filter(l=>{const c=learnerCombined(l.id); return c.combined!==null&&c.combined>=50;}).length;
+  const fail=learners.filter(l=>{const c=learnerCombined(l.id); return c.combined!==null&&c.combined<50;}).length;
+  let txt = `👑 MAKHANANI ACADEMY — PRINCIPAL WEEKLY REPORT\n\n${getWeekLabel()}\n\n📊 ACADEMY TOTALS\nLearners: ${totalLearners}\nPractised: ${practised}\nNever Practised: ${never}\nPassing (Combined): ${pass}\nNeeds Help: ${fail}\nSchool Marks Entered: ${schoolMarks.length}\nTeachers: ${teachers.length}\n\n👩🏽‍🏫 TEACHERS\n`;
+  teachers.forEach(t=>{ const my=learners.filter(l=>(t.grades||[]).includes(l.grade)); const last=teacherLog.filter(x=>x.teacherId===t.id)[0]; txt += `${t.name} — ${(t.grades||[]).join(", ")} — Learners: ${my.length} — Practised: ${my.filter(l=>l.total>0).length} — Last Login: ${last?last.at:'NEVER ❌'}\n`; });
+  txt += `\n✅ TOP 5\n`;
+  learners.slice().sort((a,b)=>(learnerCombined(b.id).combined||-1)-(learnerCombined(a.id).combined||-1)).slice(0,5).forEach(l=>{ txt += `${l.name} — ${l.grade} — Combined: ${learnerCombined(l.id).combined}% \n`; });
+  txt += `\n⚠️ NEEDS HELP\n`;
+  learners.filter(l=>{const c=learnerCombined(l.id); return c.combined!==null&&c.combined<50;}).forEach(l=>{ txt += `${l.name} — ${l.grade} — ${learnerCombined(l.id).combined}%\n`; });
+  txt += `\n😴 NEVER PRACTISED\n`;
+  learners.filter(l=>!l.total).forEach(l=>{ txt += `${l.name} — ${l.grade} — Parent: ${l.parent||"-"}\n`; });
+  return txt;
+}
+window.filterAutoReports = (f)=>{ autoFilter=f; generateAutoReports(true); };
+window.generateAutoReports = (isFilterOnly)=>{
+  if(!window._principalUnlocked){ alert("Unlock Principal first"); return; }
+  const box=document.getElementById("autoReportsBox");
+  box.style.display="block";
+  const listEl=document.getElementById("autoReportsList");
+  const weekKey = getWeekLabel();
+  let items=[];
+  const principalTxt=buildPrincipalReport();
+  items.push({type:'PRINCIPAL', key:'principal-'+weekKey, title:'👑 PRINCIPAL — Mr Chauke — Weekly Report', sub:`${learners.length} learners • ${teachers.length} teachers • ${schoolMarks.length} school marks`, phone:'27780233263', text:principalTxt});
+  teachers.forEach(t=>{
+    const phone=(t.phone||"").replace(/\D/g,"").replace(/^0/,"27");
+    const my=learners.filter(l=>(t.grades||[]).includes(l.grade));
+    items.push({type:'TEACHER', key:'teacher-'+t.id+'-'+weekKey, title:`👩🏽‍🏫 ${t.name} — ${(t.grades||[]).join(", ")}`, sub:`${my.length} learners • ${my.filter(l=>l.total>0).length} practised • ${my.filter(l=>!l.total).length} never`, phone:phone||'', text:buildTeacherReport(t)});
+  });
+  learners.forEach(l=>{
+    const phone=(l.phone||"").replace(/\D/g,"").replace(/^0/,"27");
+    const c=learnerCombined(l.id);
+    let tag='PARENT';
+    if(c.combined!==null && c.combined<50) tag='PARENT_NEEDS_HELP';
+    if(!l.total) tag='PARENT_NEVER';
+    items.push({type:tag, key:'parent-'+l.id+'-'+weekKey, title:`👨‍👩‍👧 ${l.name} — ${l.grade} — Parent: ${l.parent||"-"}`, sub:`App: ${l.total?Math.round(l.score/l.total*100):0}% • School: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'-'} • Combined: ${c.combined!==null?c.combined+'%':'-'} • Last: ${l.lastActive||"-"}`, phone:phone||'', text:buildParentReport(l)});
+  });
+  let filtered=items;
+  if(autoFilter==='PRINCIPAL') filtered=items.filter(i=>i.type==='PRINCIPAL');
+  if(autoFilter==='TEACHER') filtered=items.filter(i=>i.type==='TEACHER');
+  if(autoFilter==='PARENT') filtered=items.filter(i=>i.type.startsWith('PARENT'));
+  if(autoFilter==='NEEDS_HELP') filtered=items.filter(i=>i.type==='PARENT_NEEDS_HELP'||i.type==='TEACHER');
+  if(autoFilter==='NEVER') filtered=items.filter(i=>i.type==='PARENT_NEVER');
+  const sentCount = filtered.filter(i=>autoSent[i.key]).length;
+  document.getElementById("autoProgress").textContent = `Filter: ${autoFilter} • Showing: ${filtered.length} reports • Sent: ${sentCount} / ${filtered.length} • ${weekKey}`;
+  listEl.innerHTML = filtered.map(item=>{
+    const isSent = autoSent[item.key];
+    const phoneOk = item.phone ? `📱 ${item.phone}` : `⚠️ No phone — tap to copy text`;
+    return `<div class="qcard" style="${isSent?'border-color:#059669;background:#ecfdf5':''}"><b>${item.title}</b><br><small>${item.sub}<br>${phoneOk} ${isSent?'• ✅ SENT':''}</small><br><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="green" onclick="sendAutoReport('${item.key.replace(/'/g,"")}')">📩 SEND ON WHATSAPP</button><button class="blue" onclick="copyAutoReport('${item.key.replace(/'/g,"")}')">📋 COPY TEXT</button>${isSent?'':'<button class="dark" onclick="markAutoSent(\''+item.key.replace(/'/g,"")+'\')">✅ MARK SENT</button>'}</div></div>`;
+  }).join('') || '<p>No reports for this filter.</p>';
+  window._autoItems = {};
+  items.forEach(i=>{ window._autoItems[i.key]=i; });
+  if(!isFilterOnly) document.getElementById("autoReportsBox").scrollIntoView({behavior:'smooth'});
+};
+window.sendAutoReport = (key)=>{
+  const item = window._autoItems[key]; if(!item) return;
+  if(item.phone) window.open('https://wa.me/'+item.phone+'?text='+encodeURIComponent(item.text),'_blank');
+  else { navigator.clipboard.writeText(item.text).then(()=>alert('No phone for this person — Text copied. Paste it into WhatsApp manually.')); return; }
+  setTimeout(()=>{ markAutoSent(key); }, 3000);
+};
+window.copyAutoReport = (key)=>{
+  const item = window._autoItems[key]; if(!item) return;
+  navigator.clipboard.writeText(item.text).then(()=>alert('✅ Report copied for '+item.title));
+};
+window.markAutoSent = (key)=>{
+  autoSent[key]=true;
+  try{localStorage.setItem('ACADEMY_AUTO_SENT', JSON.stringify(autoSent));}catch(e){}
+  generateAutoReports(true);
+};
+window.markAllAutoSent = ()=>{
+  if(!confirm("Mark ALL shown reports as SENT? This clears the list for this week.")) return;
+  Object.keys(window._autoItems||{}).forEach(k=>{ autoSent[k]=true; });
+  try{localStorage.setItem('ACADEMY_AUTO_SENT', JSON.stringify(autoSent));}catch(e){}
+  generateAutoReports(true);
+  alert("✅ All marked as sent.");
+};
 window.exportPrincipalReport = ()=>{
-  const txt=`👑 MAKHANANI ACADEMY — PRINCIPAL WEEKLY REPORT\n\nLearners: ${learners.length} | Practised: ${learners.filter(l=>l.total>0).length} | Never: ${learners.filter(l=>!l.total).length}\nSchool Marks: ${schoolMarks.length}\n\nTEACHERS:\n`+teachers.map(t=>{ const my=learners.filter(l=>(t.grades||[]).includes(l.grade)); const last=teacherLog.filter(x=>x.teacherId===t.id)[0]; return `${t.name} — ${(t.grades||[]).join(", ")} — Learners: ${my.length} — Last Login: ${last?last.at:'NEVER'}`; }).join('\n')+`\n\nTOP LEARNERS (Combined):\n`+learners.slice().sort((a,b)=>(learnerCombined(b.id).combined||-1)-(learnerCombined(a.id).combined||-1)).slice(0,10).map(l=>{const c=learnerCombined(l.id);return `${l.name} — ${l.grade} — Combined: ${c.combined!==null?c.combined+'%':'-'}`;}).join('\n')+`\n\nNEEDS HELP:\n`+learners.filter(l=>{const c=learnerCombined(l.id);return c.combined!==null&&c.combined<50;}).map(l=>`${l.name} — ${l.grade} — ${learnerCombined(l.id).combined}%`).join('\n');
+  const txt=buildPrincipalReport();
   window.open('https://wa.me/27780233263?text='+encodeURIComponent(txt),'_blank');
 };
-// MARKS
+// ===== END AUTO REPORTS =====
 window.renderMarks = function(){
   const sel=document.getElementById("markLearner"); if(!sel) return;
   sel.innerHTML=learners.map(l=>`<option value="${l.id}">${l.name} — ${l.grade}</option>`).join('')||'<option value="">No learners</option>';
@@ -425,7 +546,6 @@ window.addSchoolMark = async ()=>{
     if(phone && confirm("Send this school mark to parent on WhatsApp?")){ const parentLink=location.href.split('?')[0]+'?learner='+learnerId+'&view=parent'; window.open('https://wa.me/'+phone+'?text='+encodeURIComponent('📝 MAKHANANI ACADEMY — NEW SCHOOL MARK\n\nLearner: '+(l?l.name:'')+'\nSubject: '+subject+'\n'+term+' — '+testType+'\nMark: '+scoreNum+'/'+totalNum+' = '+Math.round(pct)+'%\n\nView full report:\n'+parentLink),'_blank'); }
   }catch(e){ alert("Save mark failed: "+e.message); }
 };
-// LEARNERS
 window.registerLearner = async ()=>{
   const name=document.getElementById("ltName").value.trim(); const g=document.getElementById("ltGrade").value; const parent=document.getElementById("ltParent").value.trim(); const phone=document.getElementById("ltPhone").value.trim();
   if(!name){ alert("Enter learner name"); return; }
