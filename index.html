@@ -6,7 +6,7 @@
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f5f3ff;color:#0f172a;padding-bottom:60px;line-height:1.6}
 header{background:linear-gradient(135deg,#0a1f4d,#7c3aed,#d4af37);color:#fff;padding:18px;text-align:center}
 .topbar{background:#fff;padding:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;border-bottom:3px solid #d4af37;position:relative}
-button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;font-weight:800;text-decoration:none;display:inline-block}input,select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
+button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;font-weight:800;text-decoration:none;display:inline-block}input,select,textarea{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
 .card{background:#fff;border-radius:16px;padding:16px;margin:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden}.wrap{max-width:1100px;margin:0 auto}
 .gold{background:#d4af37;color:#0a1f4d}.blue{background:#0a1f4d;color:#fff}.green{background:#059669;color:#fff}.purple{background:#7c3aed;color:#fff}.red{background:#dc2626;color:#fff}.dark{background:#0f172a;color:#fff}.teal{background:#0d9488;color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:750px){.grid{grid-template-columns:1fr 1fr}}
@@ -22,6 +22,14 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 </style></head>
 <body>
 <div class="timer" id="examTimer">00:00</div>
+
+<!-- PARENT PORTAL VIEW - Shows when ?learner=ID & ?view=parent OR ?parent=1 -->
+<div id="parentView" style="display:none">
+  <header><h1>🎓 MAKHANANI ACADEMY</h1><p>📚 PARENT REPORT — LIVE</p></header>
+  <div class="wrap"><div id="parentReport"></div><div class="card" style="text-align:center"><b>MAKHANANI ACADEMY</b><br>Mr Vusi Chauke — 0780233263<br><button class="green" onclick="location.href=location.href.split('?')[0]">🎓 OPEN PRACTICE APP</button></div></div>
+</div>
+
+<div id="mainView">
 <header><h1>🎓 MAKHANANI ACADEMY</h1><p style="font-size:13px">Xintimani Group • Academy of Excellence • Founder Mr Vusi Chauke • WhatsApp 0780233263<br><b>Learn. Practice. Pass. — 1,000 Questions • 4 Subjects • Grade 8-12 • CAPS • ☁️ CLOUD TRACKING ON</b></p>
 <div id="currentLearnerBar" style="background:#fff;color:#0a1f4d;padding:10px;border-radius:12px;margin-top:10px;font-weight:800">👤 No Learner Selected — Tap LEARNER TRACKING below</div>
 <div id="cloudStatus" style="background:#ecfdf5;color:#065f46;padding:8px;border-radius:12px;margin-top:8px;font-size:12px;font-weight:800">☁️ Cloud: Connecting... • Project: xintimani-academy</div>
@@ -31,34 +39,76 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div class="topbar">
 <button class="purple" onclick="showTab('learn')">📚 SUBJECTS</button><button class="green" onclick="showTab('practice')">✍️ PRACTICE</button><button class="red" onclick="startHard()">🔥 HARD MODE</button><button class="gold" onclick="showTab('papers')">🎓 PAPERS</button><button class="blue" onclick="showTab('tips')">💡 TIPS</button><button class="teal" onclick="showTab('progress')">📊 MY SCORE</button>
 <button class="dark" onclick="showTab('tracking')">👤 LEARNER TRACKING ☁️</button>
-<a class="btn gold" href="https://vusichauke3037-glitch.github.io/MAKHANANI-ACADEMY/" target="_blank">🎓 ACADEMY HOME</a><a class="btn blue" href="https://vusichauke3037-glitch.github.io/XINTIMANI-GROUP/" target="_blank">🏢 GROUP</a></div>
+<button class="gold" onclick="showTab('teachers')">👩🏽‍🏫 TEACHERS</button>
+<button class="red" onclick="showTab('principal')">👑 PRINCIPAL</button>
+<button class="teal" onclick="showTab('marks')">📝 SCHOOL MARKS</button>
+<a class="btn gold" href="https://vusichauke3037-glitch.github.io/MAKHANANI-ACADEMY/" target="_blank">🎓 ACADEMY HOME</a></div>
 <div class="wrap">
 <div class="card" style="text-align:center;border:3px solid #d4af37;margin-top:14px"><span class="badge" style="display:block;background:#fef3c7;color:#92400e">🎓 MAKHANANI ACADEMY — CHOOSE SUBJECT → TOPIC → PRACTICE Q1-Q100</span><h2>Grade: <span id="curGrade">10</span> • Subject: <span id="curSubjectLabel">MATHS LIT</span> • Topic: <span id="curTopicLabel">FINANCE</span> • Q: <span id="curQLabel">1 / 100</span> • Score: <span id="scoreTop">0</span> / <span id="totalTop">0</span></h2><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="purple" onclick="setGrade(8)">GRADE 8</button><button class="purple" onclick="setGrade(9)">GRADE 9</button><button class="purple" onclick="setGrade(10)">GRADE 10</button><button class="purple" onclick="setGrade(11)">GRADE 11</button><button class="red" onclick="setGrade(12)">GRADE 12</button></div><p id="statusLine" style="font-size:12px;color:#059669;font-weight:800">✅ Makhanani Academy Loaded — Tap a Subject Below</p></div>
-<div id="tab-tracking" class="hidden">
-  <div class="card" style="border:3px solid #0a1f4d">
-    <h2>👤 Learner Tracking — ☁️ CLOUD</h2>
-    <p class="cloud">● LIVE SYNC — When a learner practises at home, you see it here instantly.</p>
-    <input id="ltName" placeholder="Learner Full Name — e.g. Thabo Nkosi">
-    <select id="ltGrade"><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
-    <input id="ltParent" placeholder="Parent Name">
-    <input id="ltPhone" placeholder="Parent Phone — e.g. 0780233263">
-    <button class="green" style="width:100%" onclick="registerLearner()">➕ REGISTER LEARNER IN CLOUD + SELECT</button>
-    <p style="font-size:12px;color:#64748b">Share this site link with learners. They register once on their own phone, then practise. You see all of them here.</p>
-  </div>
-  <div class="card">
-    <h2>📋 Select Learner (This Phone)</h2>
-    <select id="ltSelect" onchange="selectLearner(this.value)"></select>
-    <button class="blue" style="width:100%" onclick="renderTracking()">🔄 REFRESH DASHBOARD</button>
-    <button class="purple" style="width:100%;margin-top:8px" onclick="copyLearnerLink()">🔗 COPY MY LEARNER LINK (For Parent / Teacher)</button>
-  </div>
-  <div class="card">
-    <h2>📊 Learner Dashboard — ALL LEARNERS — CLOUD LIVE</h2>
-    <select id="ltFilterGrade" onchange="renderTracking()"><option value="ALL">All Grades</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
-    <p id="ltStats"></p>
-    <div id="ltList"></div>
-    <button class="green" style="width:100%;margin-top:10px" onclick="exportLearners()">📩 EXPORT ALL LEARNERS (WhatsApp to Mr Chauke)</button>
+
+<!-- PRINCIPAL -->
+<div id="tab-principal" class="hidden">
+  <div class="card" style="border:3px solid #dc2626">
+    <h2>👑 PRINCIPAL DASHBOARD — Mr Vusi Chauke Only</h2>
+    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one. This tab is for you only.</p>
+    <div id="principalLoginBox">
+      <input id="principalPin" type="password" inputmode="numeric" placeholder="Enter Principal PIN — 0780">
+      <button class="red" style="width:100%" onclick="principalLogin()">👑 UNLOCK PRINCIPAL DASHBOARD</button>
+    </div>
+    <div id="principalDashboard" style="display:none">
+      <h3>📊 Whole Academy — This Week</h3>
+      <p id="principalStats"></p>
+      <h3>👩🏽‍🏫 Teachers — Who Is Monitoring?</h3>
+      <div id="principalTeachers"></div>
+      <h3>📅 Teacher Login History (Last 20)</h3>
+      <div id="principalLog"></div>
+      <h3>📚 Learners — Weekly Report</h3>
+      <p id="principalWeekly"></p>
+      <div id="principalLearners"></div>
+      <button class="green" style="width:100%" onclick="exportPrincipalReport()">📩 EXPORT PRINCIPAL WEEKLY REPORT TO WHATSAPP</button>
+      <button class="dark" style="width:100%;margin-top:8px" onclick="principalLogout()">🚪 LOCK PRINCIPAL DASHBOARD</button>
+    </div>
   </div>
 </div>
+
+<!-- SCHOOL MARKS -->
+<div id="tab-marks" class="hidden">
+  <div class="card" style="border:3px solid #0d9488">
+    <h2>📝 SCHOOL MARKS — Real Test / Exam Marks</h2>
+    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school. It shows together with app practice in ONE report for parent + principal.</p>
+    <label><b>Learner</b></label><select id="markLearner"></select>
+    <select id="markSubject"><option>Mathematics</option><option>Maths Lit</option><option>Physical Sciences</option><option>Natural Sciences</option><option>English</option><option>isiZulu</option><option>Afrikaans</option><option>Life Skills</option><option>Social Sciences</option><option>Technology</option></select>
+    <select id="markTerm"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select>
+    <select id="markType"><option>Test</option><option>Exam</option><option>Assignment</option><option>Homework</option><option>Project</option><option>June Exam</option><option>Sept Exam</option><option>Final Exam</option></select>
+    <input id="markScore" type="number" placeholder="Mark Obtained — e.g. 72">
+    <input id="markTotal" type="number" value="100" placeholder="Total — e.g. 100">
+    <input id="markTeacher" placeholder="Entered by Teacher — e.g. Ms Dlamini">
+    <button class="teal" style="width:100%" onclick="addSchoolMark()">✅ SAVE SCHOOL MARK TO CLOUD</button>
+    <p id="markStatus" style="font-size:12px;font-weight:800"></p>
+  </div>
+  <div class="card"><h2>📋 All School Marks — Cloud</h2><select id="markFilterLearner" onchange="renderMarks()"><option value="ALL">All Learners</option></select><div id="markList"></div></div>
+</div>
+
+<!-- TEACHERS -->
+<div id="tab-teachers" class="hidden">
+  <div class="card" style="border:3px solid #d4af37">
+    <h2>👩🏽‍🏫 Teachers — Monitoring</h2>
+    <p id="teacherStatus" style="font-size:13px;font-weight:800">Not logged in as teacher — Select below or register.</p>
+    <div id="teacherLoginBox"><label><b>Select Teacher</b></label><select id="teacherSelect"></select><input id="teacherPin" type="password" inputmode="numeric" placeholder="Enter Teacher PIN — e.g. 1234"><button class="gold" style="width:100%" onclick="teacherLogin()">🔓 LOGIN AS TEACHER + VIEW MY GRADES</button><button class="dark" style="width:100%;margin-top:8px" onclick="teacherLogout()">🚪 LOGOUT TEACHER</button></div>
+    <div id="teacherDashboard" style="display:none"><h3>📊 My Monitoring Dashboard — <span id="teacherDashName"></span></h3><p id="teacherDashStats"></p><div id="teacherDashList"></div><button class="green" style="width:100%;margin-top:10px" onclick="exportMyLearners()">📩 EXPORT MY LEARNERS TO WHATSAPP</button></div>
+  </div>
+  <div class="card" style="border:3px solid #0a1f4d"><h2>➕ Add Teacher (Mr Chauke / Admin Only)</h2><input id="tName" placeholder="Teacher Full Name — e.g. Ms Dlamini"><input id="tPhone" placeholder="Teacher Phone — e.g. 0821234567"><input id="tPin" placeholder="Set PIN — e.g. 1234" type="password" inputmode="numeric"><input id="tSubjects" placeholder="Subjects — e.g. Maths Lit, Mathematics"><p><b>Grades This Teacher Monitors:</b></p><label><input type="checkbox" class="tGrade" value="Grade 8" style="width:auto"> Grade 8</label><br><label><input type="checkbox" class="tGrade" value="Grade 9" style="width:auto"> Grade 9</label><br><label><input type="checkbox" class="tGrade" value="Grade 10" style="width:auto"> Grade 10</label><br><label><input type="checkbox" class="tGrade" value="Grade 11" style="width:auto"> Grade 11</label><br><label><input type="checkbox" class="tGrade" value="Grade 12" style="width:auto"> Grade 12</label><br><button class="blue" style="width:100%;margin-top:10px" onclick="registerTeacher()">➕ ADD TEACHER TO CLOUD</button></div>
+  <div class="card"><h2>📋 Bulk Add Teachers</h2><p style="font-size:12px">One per line: <b>Name | Phone | PIN | Subjects | Grades</b></p><textarea id="bulkTeacherText" rows="4" placeholder="Ms Dlamini | 0821234567 | 1234 | Maths Lit | Grade 10, Grade 11"></textarea><button class="gold" style="width:100%" onclick="bulkRegisterTeachers()">📋 REGISTER ALL TEACHERS</button><p id="bulkTeacherStatus" style="font-size:12px;font-weight:800"></p></div>
+  <div class="card"><h2>👩🏽‍🏫 All Teachers</h2><div id="teacherList"></div></div>
+</div>
+
+<!-- LEARNER TRACKING -->
+<div id="tab-tracking" class="hidden">
+  <div class="card" style="border:3px solid #0a1f4d"><h2>👤 Learner Tracking — ☁️ CLOUD</h2><p class="cloud">● LIVE SYNC — When a learner practises at home, you see it here instantly.</p><input id="ltName" placeholder="Learner Full Name — e.g. Thabo Nkosi"><select id="ltGrade"><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select><input id="ltParent" placeholder="Parent Name"><input id="ltPhone" placeholder="Parent Phone — e.g. 0780233263"><button class="green" style="width:100%" onclick="registerLearner()">➕ REGISTER LEARNER IN CLOUD + SELECT</button><div style="background:#fefce8;padding:12px;border-radius:12px;margin-top:12px;border:2px dashed #d4af37"><h3>📋 BULK REGISTER — Paste List</h3><p style="font-size:12px">One learner per line: <b>Name | Grade | Parent | Phone</b></p><textarea id="bulkText" rows="6" placeholder="Thabo Nkosi | Grade 10 | Maria Nkosi | 0781234567"></textarea><button class="gold" style="width:100%" onclick="bulkRegister()">📋 REGISTER ALL FROM LIST ☁️</button><p id="bulkStatus" style="font-size:12px;font-weight:800"></p></div></div>
+  <div class="card"><h2>📋 Select Learner (This Phone)</h2><select id="ltSelect" onchange="selectLearner(this.value)"></select><button class="blue" style="width:100%" onclick="renderTracking()">🔄 REFRESH DASHBOARD</button><button class="purple" style="width:100%;margin-top:8px" onclick="copyLearnerLink()">🔗 COPY MY LEARNER LINK</button><button class="green" style="width:100%;margin-top:8px" onclick="copyParentLink()">👨‍👩‍👧 COPY PARENT REPORT LINK (Parent Sees Only Their Child)</button></div>
+  <div class="card"><h2>📊 Learner Dashboard — ALL LEARNERS — CLOUD LIVE</h2><select id="ltFilterGrade" onchange="renderTracking()"><option value="ALL">All Grades</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select><p id="ltStats"></p><div id="ltList"></div><button class="green" style="width:100%;margin-top:10px" onclick="exportLearners()">📩 EXPORT ALL LEARNERS (WhatsApp to Mr Chauke)</button></div>
+</div>
+
 <div id="tab-learn"><div class="card"><h2>📚 4 Subjects Inside Makhanani Academy</h2><div class="grid" id="subjectGrid"></div></div><div class="card"><h2>📖 Topics — <span id="learnSubject">MATHS LIT</span></h2><div class="grid" id="topicGrid"></div></div><div class="card" style="border:3px solid #dc2626"><h2>🔥 Hard Mode — Grade 12 Maths Lit</h2><button class="red" style="width:100%" onclick="startHard()">🔥 ENTER HARD MODE →</button></div></div>
 <div id="tab-practice" class="hidden"><div class="card"><h2>✍️ Practice — <span id="practiceSubject">MATHS LIT</span> • <span id="practiceTopic">FINANCE</span> — Q <span id="practiceQNum">1</span> / 100</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="blue" onclick="moveQ(-10)">⏮ -10</button><button class="blue" onclick="moveQ(-1)">◀ PREV</button><button class="blue" onclick="moveQ(1)">NEXT ▶</button><button class="blue" onclick="moveQ(10)">+10 ⏭</button><button class="purple" onclick="randomQ()">🎲 RANDOM</button></div><p>Jump: <input type="number" id="jumpInput" min="1" max="100" value="1" style="width:90px;display:inline-block"><button class="purple" onclick="jumpQ()" style="width:auto">GO</button></p><div id="practiceBox"></div><div style="background:#fefce8;padding:12px;border-radius:12px"><b>Progress:</b> <span id="topicProgress">0 / 100</span><br><progress id="topicBar" value="0" max="100" style="width:100%"></progress></div></div></div>
 <div id="tab-hard" class="hidden"><div class="card" style="border:3px solid #dc2626"><h2>🔥 HARD MODE — Q <span id="hardQNum">1</span> / 100</h2><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="red" onclick="setHardFilter('ALL')">ALL</button><button class="dark" onclick="setHardFilter('COMPOUND')">COMPOUND</button><button class="dark" onclick="setHardFilter('HIRE')">HIRE</button><button class="dark" onclick="setHardFilter('EXCHANGE')">EXCHANGE</button><button class="dark" onclick="setHardFilter('INFLATION')">INFLATION</button><button class="dark" onclick="setHardFilter('LOAN')">LOAN</button><button class="dark" onclick="setHardFilter('BREAKEVEN')">BREAK-EVEN</button></div><p><b>Filter:</b> <span id="hardFilterLabel">ALL HARD</span></p><div style="display:flex;gap:8px"><button class="blue" onclick="moveHard(-1)">◀ PREV</button><button class="blue" onclick="moveHard(1)">NEXT ▶</button><button class="red" onclick="randomHard()">🎲 RANDOM</button></div><p>Jump: <input type="number" id="jumpHardInput" min="1" max="100" value="1" style="width:90px;display:inline-block"><button class="red" onclick="jumpHard()" style="width:auto">GO</button></p><div id="hardBox"></div><div style="background:#fee2e2;padding:12px;border-radius:12px"><b>Hard Progress:</b> <span id="hardProgress">0 / 100</span><br><progress id="hardBar" value="0" max="100" style="width:100%"></progress></div></div></div>
@@ -77,6 +127,7 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="tab-progress" class="hidden"><div class="card"><h2>📊 My Score — Makhanani Academy</h2><p><b>Learner:</b> <span id="progressLearner">No learner selected</span><br><b>Correct:</b> <span id="scoreBox">0</span> • <b>Attempted:</b> <span id="totalBox">0</span> • <b>Accuracy:</b> <span id="accBox">0%</span> • <b>Hard Done:</b> <span id="hardDoneBox">0</span> / 100</p><p id="motivBox"></p><button class="purple" style="width:100%" onclick="showTab('practice')">✍️ PRACTICE</button><button class="red" style="width:100%;margin-top:8px" onclick="startHard()">🔥 HARD</button><button class="blue" style="width:100%;margin-top:8px" onclick="resetScore()">🔄 RESET</button><button class="green" style="width:100%;margin-top:8px" onclick="shareScore()">📩 SEND SCORE TO MR CHAUKE</button><button class="dark" style="width:100%;margin-top:8px" onclick="shareScoreToParent()">📩 SEND SCORE TO PARENT</button></div></div>
 <div class="card" style="text-align:center"><b>MAKHANANI ACADEMY — XINTIMANI GROUP</b><br>Mr Vusi Chauke — WhatsApp 0780233263 — Learn. Practice. Pass.</div>
 </div>
+</div>
 <script>
 var grade=10,curSubject='MATHS_LIT',curTopic='FINANCE',curQ=1,score=0,total=0;
 try{score=parseInt(localStorage.getItem('ACADEMY_SCORE')||'0');total=parseInt(localStorage.getItem('ACADEMY_TOTAL')||'0');}catch(e){}
@@ -84,12 +135,25 @@ var done={};try{done=JSON.parse(localStorage.getItem('ACADEMY_DONE')||'{}');}cat
 var hardDone={};try{hardDone=JSON.parse(localStorage.getItem('ACADEMY_HARD_DONE')||'{}');}catch(e){hardDone={};}
 var curHard=1,hardFilter='ALL',examTimerInt=null,examLeft=0,examPaper=null,examAnswers={};
 var learners=[]; var currentLearnerId=localStorage.getItem('ACADEMY_CURRENT_LEARNER')||'';
-var cloudReady=false;
+var cloudReady=false; var schoolMarks=[]; var teacherLog=[];
+var isParentView = new URLSearchParams(location.search).get("view")==="parent" || new URLSearchParams(location.search).get("parent")==="1";
 function getCurrentLearner(){return learners.find(function(l){return l.id===currentLearnerId;});}
 function updateLearnerBar(){var l=getCurrentLearner();var bar=document.getElementById('currentLearnerBar');if(!bar)return;if(l){var acc=l.total?Math.round(l.score/l.total*100):0;bar.textContent='👤 '+l.name+' • '+l.grade+' • Score: '+l.score+' / '+l.total+' • '+acc+'% • Parent: '+(l.parent||'-')+' • ☁️ CLOUD';}else bar.textContent='👤 No Learner Selected — Tap LEARNER TRACKING below';var pl=document.getElementById('progressLearner');if(pl)pl.textContent=l?l.name+' — '+l.grade:'No learner selected';}
+function learnerSchoolMarks(id){return schoolMarks.filter(m=>m.learnerId===id);}
+function learnerCombined(id){
+  var l=learners.find(x=>x.id===id); if(!l) return null;
+  var sm=learnerSchoolMarks(id);
+  var schoolAvg=sm.length? sm.reduce((s,m)=>s+m.pct,0)/sm.length : null;
+  var appAcc=l.total? l.score/l.total*100 : null;
+  var combined=null;
+  if(schoolAvg!==null && appAcc!==null) combined=Math.round((schoolAvg+appAcc)/2);
+  else if(schoolAvg!==null) combined=Math.round(schoolAvg);
+  else if(appAcc!==null) combined=Math.round(appAcc);
+  return {learner:l, schoolMarks:sm, schoolAvg, appAcc, combined};
+}
 function renderTracking(){
   var sel=document.getElementById('ltSelect');if(!sel)return;
-  sel.innerHTML=learners.map(function(l){return '<option value="'+l.id+'" '+(l.id===currentLearnerId?'selected':'')+'>'+l.name+' — '+l.grade+' — '+l.score+'/'+l.total+'</option>';}).join('')||'<option value="">No learners yet — Register above</option>';
+  sel.innerHTML=learners.map(function(l){return '<option value="'+l.id+'" '+(l.id===currentLearnerId?'selected':'')+'>'+l.name+' — '+l.grade+' — '+l.score+'/'+l.total+'</option>';}).join('')||'<option value="">No learners yet</option>';
   var fg=document.getElementById('ltFilterGrade')?document.getElementById('ltFilterGrade').value:'ALL';
   var filtered=learners.filter(function(l){return fg==='ALL'||l.grade===fg;});
   var sorted=filtered.slice().sort(function(a,b){var aa=a.total?a.score/a.total:0;var bb=b.total?b.score/b.total:0;return bb-aa;});
@@ -98,16 +162,36 @@ function renderTracking(){
   var never=filtered.filter(function(l){return !l.total;}).length;
   document.getElementById('ltStats').innerHTML='Total: <b>'+filtered.length+'</b> | Pass: <b style="color:#059669">'+pass+'</b> | Needs Help: <b style="color:#dc2626">'+fail+'</b> | Never Practised: <b>'+never+'</b> | Cloud: '+(cloudReady?'✅ LIVE':'⏳ Connecting...');
   document.getElementById('ltList').innerHTML=sorted.map(function(l){
+    var c=learnerCombined(l.id);
     var acc=l.total?Math.round(l.score/l.total*100):0;
     var subj=Object.keys(l.subjects||{}).map(function(k){return k+': '+(l.subjects[k].score)+'/'+(l.subjects[k].total);}).join(' • ')||'No subject yet';
     var phone=(l.phone||'').replace(/\D/g,'').replace(/^0/,'27');
-    return '<div class="qcard"><b>'+l.name+'</b> — '+l.grade+'<br><span class="badge '+(acc>=50?'':'badge-red')+'">'+acc+'% — '+l.score+' / '+l.total+'</span><br><small>Parent: '+(l.parent||'-')+' — '+(l.phone||'-')+'<br>Last Active: '+(l.lastActive||'-')+'<br>'+subj+'</small><br><button class="blue" onclick="selectLearner(\''+l.id+'\')">✅ SELECT THIS LEARNER ON THIS PHONE</button> '+(phone?'<button class="green" onclick="shareLearnerToParent(\''+l.id+'\')">📩 SEND TO PARENT</button>':'')+'</div>';
-  }).join('')||'<p>No learners yet. Register above.</p>';
+    return '<div class="qcard"><b>'+l.name+'</b> — '+l.grade+'<br><span class="badge '+(acc>=50?'':'badge-red')+'">App: '+acc+'% — '+l.score+' / '+l.total+'</span> '+(c.schoolAvg!==null?'<span class="badge" style="background:#ccfbf1;color:#115e59">School: '+Math.round(c.schoolAvg)+'% ('+c.schoolMarks.length+' marks)</span>':'<span class="badge">School: No marks yet</span>')+' '+(c.combined!==null?'<span class="badge" style="background:#fef3c7;color:#92400e">Combined: '+c.combined+'%</span>':'')+'<br><small>Parent: '+(l.parent||'-')+' — '+(l.phone||'-')+'<br>Last Active: '+(l.lastActive||'-')+'<br>'+subj+'</small><br><button class="blue" onclick="selectLearner(\''+l.id+'\')">✅ SELECT</button> '+(phone?'<button class="green" onclick="shareLearnerToParent(\''+l.id+'\')">📩 SEND TO PARENT</button>':'')+' <button class="purple" onclick="copyParentLinkFor(\''+l.id+'\')">👨‍👩‍👧 PARENT LINK</button></div>';
+  }).join('')||'<p>No learners yet.</p>';
+  renderMarks();
 }
-function shareLearnerToParent(id){var l=learners.find(function(x){return x.id===id;});if(!l)return;var acc=l.total?Math.round(l.score/l.total*100):0;var phone=(l.phone||'').replace(/\D/g,'').replace(/^0/,'27');var msg='🎓 MAKHANANI ACADEMY — LEARNER TRACKING ☁️\n\nLearner: '+l.name+'\nGrade: '+l.grade+'\nScore: '+l.score+' / '+l.total+'\nAccuracy: '+acc+'%\nLast Active: '+(l.lastActive||'-')+'\n\nKeep practising — Learn. Practice. Pass.\nMr Vusi Chauke — 0780233263';if(phone)window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');else alert(msg);}
-function shareScoreToParent(){var l=getCurrentLearner();if(!l){alert('Select a learner first in LEARNER TRACKING');return;}shareLearnerToParent(l.id);}
-function exportLearners(){var txt='🎓 MAKHANANI ACADEMY — ALL LEARNERS ☁️\n\n'+learners.map(function(l){var acc=l.total?Math.round(l.score/l.total*100):0;return l.name+' — '+l.grade+' — '+l.score+'/'+l.total+' — '+acc+'% — Parent: '+(l.parent||'-')+' — Last: '+(l.lastActive||'-');}).join('\n');window.open('https://wa.me/27780233263?text='+encodeURIComponent(txt),'_blank');}
-function copyLearnerLink(){var l=getCurrentLearner();if(!l){alert('Select a learner first');return;}var link=location.href.split('?')[0]+'?learner='+l.id;navigator.clipboard.writeText(link).then(function(){alert('Learner link copied:\n'+link+'\n\nSend this to parent / teacher — opening this link auto-selects '+l.name);});}
+function shareLearnerToParent(id){var l=learners.find(function(x){return x.id===id;});if(!l)return;var c=learnerCombined(id);var acc=l.total?Math.round(l.score/l.total*100):0;var phone=(l.phone||'').replace(/\D/g,'').replace(/^0/,'27');var parentLink=location.href.split('?')[0]+'?learner='+id+'&view=parent';var msg='🎓 MAKHANANI ACADEMY — LEARNER REPORT ☁️\n\nLearner: '+l.name+'\nGrade: '+l.grade+'\nApp Practice: '+l.score+' / '+l.total+' = '+acc+'%\nSchool Marks Avg: '+(c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'No school marks yet')+'\nCombined: '+(c.combined!==null?c.combined+'%':'-')+'\nLast Active: '+(l.lastActive||'-')+'\n\n👨‍👩‍👧 View FULL Parent Report (live, no login):\n'+parentLink+'\n\nMr Vusi Chauke — 0780233263';if(phone)window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');else alert(msg);}
+function shareScoreToParent(){var l=getCurrentLearner();if(!l){alert('Select a learner first');return;}shareLearnerToParent(l.id);}
+function exportLearners(){var txt='🎓 MAKHANANI ACADEMY — ALL LEARNERS ☁️\n\n'+learners.map(function(l){var c=learnerCombined(l.id);var acc=l.total?Math.round(l.score/l.total*100):0;return l.name+' — '+l.grade+' — App: '+l.score+'/'+l.total+' ('+acc+'%) — School: '+(c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'-')+' — Combined: '+(c.combined!==null?c.combined+'%':'-')+' — Last: '+(l.lastActive||'-');}).join('\n');window.open('https://wa.me/27780233263?text='+encodeURIComponent(txt),'_blank');}
+function copyLearnerLink(){var l=getCurrentLearner();if(!l){alert('Select a learner first');return;}var link=location.href.split('?')[0]+'?learner='+l.id;navigator.clipboard.writeText(link).then(function(){alert('Learner link copied:\n'+link);});}
+function copyParentLink(){var l=getCurrentLearner();if(!l){alert('Select a learner first');return;}copyParentLinkFor(l.id);}
+function copyParentLinkFor(id){var link=location.href.split('?')[0]+'?learner='+id+'&view=parent';navigator.clipboard.writeText(link).then(function(){var l=learners.find(x=>x.id===id);alert('👨‍👩‍👧 Parent Link copied for '+(l?l.name:'')+':\n'+link+'\n\nParent sees ONLY this child — no other learners, no teacher tabs.');});}
+function renderParentView(){
+  var l=getCurrentLearner(); if(!l){ document.getElementById('parentReport').innerHTML='<div class="card"><b>Learner not found</b><p>Ask school to resend link.</p></div>'; return; }
+  var c=learnerCombined(l.id);
+  var acc=l.total?Math.round(l.score/l.total*100):0;
+  var subj=Object.keys(l.subjects||{}).map(function(k){return '<tr><td>'+k+'</td><td>'+l.subjects[k].score+' / '+l.subjects[k].total+'</td><td>'+Math.round(l.subjects[k].score/l.subjects[k].total*100)+'%</td></tr>';}).join('');
+  var marksHtml=c.schoolMarks.map(function(m){return '<tr><td>'+m.subject+'</td><td>'+m.term+'</td><td>'+m.testType+'</td><td>'+m.score+' / '+m.total+'</td><td>'+Math.round(m.pct)+'%</td></tr>';}).join('');
+  var msg = c.combined!==null && c.combined>=80 ? '🌟 Excellent! Distinction level. Keep it up!' : c.combined!==null && c.combined>=50 ? '✅ Passing. Keep practising 10 questions per day to improve.' : '⚠️ Needs support — please speak to teacher about extra help.';
+  document.getElementById('parentReport').innerHTML=`
+  <div class="card" style="text-align:center;border:3px solid #d4af37"><h2>${l.name}</h2><p>${l.grade} | Parent: ${l.parent||''}</p>
+  <div style="font-size:36px;font-weight:900">${c.combined!==null?c.combined+'%':'No data yet'}</div><p><b>Combined Score</b> — App + School Marks</p>
+  <p><span class="badge">📱 App Practice: ${l.score} / ${l.total} = ${acc}%</span> <span class="badge" style="background:#ccfbf1;color:#115e59">📝 School Marks Avg: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'No marks yet'}</span></p>
+  <p>${msg}</p><p style="font-size:12px;color:#64748b">Last Active: ${l.lastActive||'-'}</p></div>
+  <div class="card"><h3>📱 App Practice — By Subject</h3>${subj?'<table><tr><th>Subject</th><th>Score</th><th>%</th></tr>'+subj+'</table>':'<p>No app practice yet.</p>'}</div>
+  <div class="card"><h3>📝 School Marks — Real Tests / Exams</h3>${marksHtml?'<table><tr><th>Subject</th><th>Term</th><th>Type</th><th>Mark</th><th>%</th></tr>'+marksHtml+'</table>':'<p>No school marks entered yet. Teacher will add them.</p>'}</div>
+  <div class="card"><h3>💡 What To Do Next</h3><p>1. Practise 10 questions per day in the app.<br>2. Focus on weakest subject above.<br>3. Ask teacher if Combined is below 50%.</p></div>`;
+}
 function fmt(n){return Math.round(n).toLocaleString('en-ZA');}
 function saveScore(){try{localStorage.setItem('ACADEMY_SCORE',score);localStorage.setItem('ACADEMY_TOTAL',total);}catch(e){}}
 function genFinance(n){var P=Math.round((1000+(n*137)%9000)/100)*100;var r=5+(n%12);var yrs=1+(n%4);var t=n%5;if(t===0){var I=Math.round(P*r/100*yrs);return {q:'Invest R'+fmt(P)+' at '+r+'% simple interest for '+yrs+' yrs. Interest = ?',opts:['R'+fmt(I*0.5),'R'+fmt(I),'R'+fmt(I+200),'R'+fmt(I*2)],ans:1,exp:'I = P x r x n = R'+fmt(I),marks:3};}if(t===1){var ex=Math.round((500+(n*89)%4500)/10)*10;var inc=Math.round(ex*1.15);return {q:'Price R'+fmt(ex)+' excl VAT (15%). Incl VAT = ?',opts:['R'+fmt(inc),'R'+fmt(ex+100),'R'+fmt(ex),'R'+fmt(ex*1.5)],ans:0,exp:'Incl = R'+fmt(inc),marks:3};}if(t===2){var g=Math.round((6000+(n*211)%9000)/100)*100;var d=Math.round(g*0.18);return {q:'Gross R'+fmt(g)+', Deductions R'+fmt(d)+'. Net = ?',opts:['R'+fmt(g),'R'+fmt(g-d),'R'+fmt(d),'R'+fmt(g+d)],ans:1,exp:'Net = R'+fmt(g-d),marks:2};}if(t===3){var inc2=Math.round((8000+(n*173)%7000)/100)*100;var e=Math.round(inc2*0.6);return {q:'Income R'+fmt(inc2)+', Expenses R'+fmt(e)+'. Savings = ?',opts:['R'+fmt(inc2-e+500),'R'+fmt(inc2-e),'R'+fmt(e),'R'+fmt(inc2)],ans:1,exp:'Savings = R'+fmt(inc2-e),marks:2};}var A=Math.round(P*Math.pow(1+r/100,2));return {q:'Invest R'+fmt(P)+' at '+r+'% compound for 2 yrs. Amount = ?',opts:['R'+fmt(A),'R'+fmt(P),'R'+fmt(P+Math.round(P*r/100*2)),'R'+fmt(A+500)],ans:0,exp:'A = R'+fmt(A),marks:4};}
@@ -122,7 +206,7 @@ function genPhys(n){var m=2+(n%8);var a=2+(n%6);var t=n%5;if(t===0){var F=m*a;re
 function genNat(n){var t=n%5;if(t===0)return {q:'Photosynthesis: Plants use CO2 + Water + Sunlight to make?',opts:['Oxygen + Glucose','Carbon Dioxide','Salt','Plastic'],ans:0,exp:'Photosynthesis: CO2 + H2O -> Glucose + Oxygen.',marks:3};if(t===1)return {q:'Which is a producer in a food web?',opts:['Lion','Grass','Hyena','Human'],ans:1,exp:'Grass is a producer.',marks:2};if(t===2)return {q:'Water boils at what temperature at sea level?',opts:['50C','100C','0C','200C'],ans:1,exp:'Water boils at 100C.',marks:2};if(t===3)return {q:'Which planet is known as the Red Planet?',opts:['Venus','Mars','Jupiter','Mercury'],ans:1,exp:'Mars is the Red Planet.',marks:2};var organs=['Heart','Lungs','Stomach','Brain'];var pick=organs[n%4];var funcs={'Heart':'Pumps blood','Lungs':'Take in oxygen','Stomach':'Digests food','Brain':'Controls body'};return {q:'What does the '+pick+' do?',opts:[funcs[pick],'Makes food by photosynthesis','Absorbs sunlight','Produces oxygen'],ans:0,exp:pick+' - '+funcs[pick]+'.',marks:2};}
 var SUBJECTS=[{key:'MATHS_LIT',icon:'📐',title:'MATHS LIT',desc:'Grade 10-12 • 600 + 100 Hard',color:'#7c3aed'},{key:'MATHS',icon:'∑',title:'MATHEMATICS',desc:'Grade 8-12 • 100 Q',color:'#0a1f4d'},{key:'PHYS',icon:'⚛️',title:'PHYSICAL SCIENCES',desc:'Grade 10-12 • 100 Q',color:'#059669'},{key:'NAT',icon:'🌱',title:'NATURAL SCIENCES',desc:'Grade 8-9 • 100 Q',color:'#059669'}];
 var TOPIC_MAP={MATHS_LIT:[{key:'FINANCE',title:'Finance',icon:'💰'},{key:'DATA',title:'Data',icon:'📊'},{key:'MEASURE',title:'Measurement',icon:'📏'},{key:'MAPS',title:'Maps',icon:'🗺️'},{key:'PROB',title:'Probability',icon:'🎲'},{key:'TAX',title:'Tax',icon:'🧾'}],MATHS:[{key:'MATHS',title:'Mathematics',icon:'∑'}],PHYS:[{key:'PHYS',title:'Physical Sciences',icon:'⚛️'}],NAT:[{key:'NAT',title:'Natural Sciences',icon:'🌱'}]};
-var GEN={FINANCE:genFinance,DATA:genData,MEASURE:genMeasure,MAPS:genMaps,PROB:genProb,TAX:genTax,MATHS:genMaths,PHYS:genPhys,NAT:genNat,HARD:genHard};
+var GEN={FINANCE:genFinance,DATA:genData,[STRIPPED]
 function setGrade(g){grade=g;document.getElementById('curGrade').textContent=g;if(g!==12&&curTopic==='HARD'){curTopic='FINANCE';}}
 function renderSubjects(){document.getElementById('subjectGrid').innerHTML=SUBJECTS.map(function(s){return '<div class="subject '+(s.key===curSubject?'active':'')+'" onclick="selectSubject(\''+s.key+'\')" style="border-color:'+s.color+'"><div style="font-size:36px">'+s.icon+'</div><b>'+s.title+'</b><br><small>'+s.desc+'</small><br><b>Tap To Open →</b></div>';}).join('');document.getElementById('learnSubject').textContent=SUBJECTS.find(function(x){return x.key===curSubject;}).title;renderTopics();}
 function renderTopics(){var list=TOPIC_MAP[curSubject]||[];document.getElementById('topicGrid').innerHTML=list.map(function(t){return '<div class="topic '+(t.key===curTopic?'active':'')+'" onclick="selectTopic(\''+t.key+'\')"><div style="font-size:28px">'+t.icon+'</div><b>'+t.title+'</b><br><small>100 Questions</small></div>';}).join('');}
@@ -143,7 +227,7 @@ function jumpQ(){var v=parseInt(document.getElementById('jumpInput').value||'1')
 function randomQ(){curQ=1+Math.floor(Math.random()*100);loadPractice();}
 function answerPractice(btn,chosen,correct){var card=btn.closest('.qcard');var opts=card.querySelectorAll('.opt');for(var i=0;i<opts.length;i++)opts[i].disabled=true;total++;if(chosen===correct){btn.classList.add('correct');score++;}else{btn.classList.add('wrong');opts[correct].classList.add('correct');}saveScore();done[curSubject+'-'+curTopic+'-'+curQ]=true;try{localStorage.setItem('ACADEMY_DONE',JSON.stringify(done));}catch(e){}card.querySelector('.exp').classList.remove('hidden');updateScore();updateProgress();if(window.cloudTrack)window.cloudTrack(chosen===correct,curSubject);}
 function updateProgress(){var c=0;for(var k in done){if(k.indexOf(curSubject+'-'+curTopic+'-')===0)c++;}document.getElementById('topicProgress').textContent=c+' / 100 done in '+curTopic;document.getElementById('topicBar').value=c;}
-function showTab(tab){['learn','practice','hard','papers','tips','progress','tracking'].forEach(function(x){var el=document.getElementById('tab-'+x);if(el)el.classList.toggle('hidden',x!==tab);});if(tab==='progress')updateScore();if(tab==='tracking')renderTracking();window.scrollTo({top:0,behavior:'smooth'});}
+function showTab(tab){['learn','practice','hard','papers','tips','progress','tracking','teachers','principal','marks'].forEach(function(x){var el=document.getElementById('tab-'+x);if(el)el.classList.toggle('hidden',x!==tab);});if(tab==='progress')updateScore();if(tab==='tracking')renderTracking();if(tab==='teachers'&&window.renderTeachers)renderTeachers();if(tab==='principal'&&window.renderPrincipal)renderPrincipal();if(tab==='marks')renderMarks();window.scrollTo({top:0,behavior:'smooth'});}
 function updateScore(){document.getElementById('scoreTop').textContent=score;document.getElementById('totalTop').textContent=total;document.getElementById('scoreBox').textContent=score;document.getElementById('totalBox').textContent=total;var acc=total?Math.round(score/total*100):0;document.getElementById('accBox').textContent=acc+'%';document.getElementById('motivBox').textContent=acc>=80?'Excellent! Distinction 🌟':acc>=50?'Good! Keep going':'Keep going — 10 Q per day!';updateLearnerBar();}
 function resetScore(){if(confirm('Reset ALL on this phone? Cloud record will also reset for selected learner.')){score=0;total=0;done={};hardDone={};try{localStorage.removeItem('ACADEMY_SCORE');localStorage.removeItem('ACADEMY_TOTAL');localStorage.removeItem('ACADEMY_DONE');localStorage.removeItem('ACADEMY_HARD_DONE');}catch(e){}if(window.cloudReset)window.cloudReset();updateScore();updateProgress();updateHardProgress();renderTracking();}}
 function shareScore(){var l=getCurrentLearner();var who=l?l.name+' ('+l.grade+')':'No learner selected';var acc=total?Math.round(score/total*100):0;window.open('https://wa.me/27780233263?text='+encodeURIComponent('Hello Mr Chauke, Makhanani Academy\nLearner: '+who+'\nGrade: '+grade+'\nSubject: '+curSubject+'\nScore: '+score+' / '+total+'\nAccuracy: '+acc+'%'),' _blank');}
@@ -162,7 +246,14 @@ function startPaper(paper){examPaper=paper;examAnswers={};var qs=paperQuestions(
 function startTimer(){clearInterval(examTimerInt);document.getElementById('examTimer').style.display='block';examTimerInt=setInterval(function(){examLeft--;var m=Math.floor(examLeft/60),s=examLeft%60;document.getElementById('examTimer').textContent='⏰ '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');if(examLeft<=0){clearInterval(examTimerInt);finishPaper();}},1000);}
 function finishPaper(){clearInterval(examTimerInt);document.getElementById('examTimer').style.display='none';var qs=paperQuestions(examPaper);var got=0,tot=0;var memo='<h3>📖 MEMO — '+examPaper+'</h3>';qs.forEach(function(q,i){tot+=q.marks;var ok=examAnswers[i]===q.ans;if(ok)got+=q.marks;memo+='<div class="qcard"><b>Q'+(i+1)+' — '+(ok?'✅ +'+q.marks:'❌ 0 / '+q.marks)+'</b><p>'+q.q+'</p><p><b>Correct:</b> '+String.fromCharCode(65+q.ans)+') '+q.opts[q.ans]+'</p><p><b>Solution:</b> '+q.exp+'</p></div>';});document.getElementById('examBox').innerHTML='<div style="background:#ecfdf5;border:3px solid #059669;border-radius:16px;padding:16px;text-align:center"><h2>🎉 RESULT: '+got+' / '+tot+' = '+Math.round(got/tot*100)+'%</h2></div>'+memo;score+=got;total+=qs.length;saveScore();updateScore();}
 function showMemo(paper){var qs=paperQuestions(paper);var html='<h3>📖 MEMO — '+paper+'</h3>'+qs.map(function(q,i){return '<div class="qcard"><b>Q'+(i+1)+' • '+q.marks+' marks</b><p>'+q.q+'</p><p><b>Answer:</b> '+String.fromCharCode(65+q.ans)+') '+q.opts[q.ans]+'</p><p><b>Solution:</b> '+q.exp+'</p></div>';}).join('');document.getElementById('examBox').innerHTML=html;document.getElementById('examBox').scrollIntoView({behavior:'smooth'});}
-try{renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions Ready + Cloud Tracking';}catch(err){document.getElementById('statusLine').textContent='❌ Error: '+err.message;document.getElementById('statusLine').style.color='#dc2626';}
+try{
+  if(isParentView){
+    document.getElementById('mainView').style.display='none';
+    document.getElementById('parentView').style.display='block';
+  } else {
+    renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions + Cloud + Teachers + Principal + Marks + Parent Portal';
+  }
+}catch(err){document.getElementById('statusLine').textContent='❌ Error: '+err.message;document.getElementById('statusLine').style.color='#dc2626';}
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -180,6 +271,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const learnersCol = collection(db, "academy_cloud_learners");
 const attemptsCol = collection(db, "academy_cloud_attempts");
+const teachersCol = collection(db, "academy_cloud_teachers");
+const marksCol = collection(db, "academy_cloud_marks");
+const logCol = collection(db, "academy_cloud_teacher_log");
 const statusEl = document.getElementById("cloudStatus");
 const urlLearner = new URLSearchParams(location.search).get("learner");
 if(urlLearner){ currentLearnerId = urlLearner; try{localStorage.setItem("ACADEMY_CURRENT_LEARNER", urlLearner);}catch(e){} }
@@ -187,59 +281,168 @@ onSnapshot(query(learnersCol, orderBy("createdAt","desc")), snap=>{
   learners = snap.docs.map(d=>({id:d.id, ...d.data()}));
   cloudReady = true;
   if(statusEl) statusEl.textContent = "☁️ Cloud: LIVE — "+learners.length+" learners synced • Project: xintimani-academy";
-  statusEl.style.background="#ecfdf5"; statusEl.style.color="#065f46";
+  if(statusEl){statusEl.style.background="#ecfdf5"; statusEl.style.color="#065f46";}
   const l = getCurrentLearner();
   if(l){ score = l.score||0; total = l.total||0; saveScore(); updateScore(); }
-  updateLearnerBar(); renderTracking();
-}, err=>{
-  if(statusEl){ statusEl.textContent = "☁️ Cloud Error: "+err.message+" — Check Firestore Rules in xintimani-academy"; statusEl.style.background="#fee2e2"; statusEl.style.color="#991b1b"; }
+  if(isParentView){ renderParentView(); }
+  else { updateLearnerBar(); renderTracking(); }
+  if(currentTeacher) renderTeacherDashboard();
+  if(window._principalUnlocked) renderPrincipal();
+}, err=>{ if(statusEl){ statusEl.textContent = "☁️ Cloud Error: "+err.message; statusEl.style.background="#fee2e2"; statusEl.style.color="#991b1b"; } });
+onSnapshot(query(marksCol, orderBy("createdAt","desc")), snap=>{
+  schoolMarks = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  if(isParentView) renderParentView(); else { renderTracking(); renderMarks(); }
+  if(window._principalUnlocked) renderPrincipal();
 });
+onSnapshot(query(logCol, orderBy("createdAt","desc")), snap=>{
+  teacherLog = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  if(window._principalUnlocked) renderPrincipal();
+});
+// TEACHERS
+var teachers=[]; var currentTeacher=null;
+try{ currentTeacher = JSON.parse(localStorage.getItem('ACADEMY_TEACHER')||'null'); }catch(e){ currentTeacher=null; }
+onSnapshot(query(teachersCol, orderBy("createdAt","desc")), snap=>{
+  teachers = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  renderTeachers();
+  if(currentTeacher){ const fresh = teachers.find(t=>t.id===currentTeacher.id); if(fresh){ currentTeacher=fresh; renderTeacherDashboard(); } }
+  if(window._principalUnlocked) renderPrincipal();
+});
+window.renderTeachers = function(){
+  const sel=document.getElementById("teacherSelect"); if(!sel) return;
+  sel.innerHTML=teachers.map(t=>`<option value="${t.id}">${t.name} — ${(t.grades||[]).join(", ")} — ${t.subjects||""}</option>`).join('')||'<option value="">No teachers yet</option>';
+  document.getElementById("teacherList").innerHTML=teachers.map(t=>`<div class="qcard"><b>${t.name}</b><br><small>Phone: ${t.phone||"-"}<br>Subjects: ${t.subjects||"-"}<br>Grades: ${(t.grades||[]).join(", ")}<br>PIN: ****</small><br><button class="green" onclick="sendTeacherInvite('${t.id}')">📩 SEND INVITE</button></div>`).join('')||'<p>No teachers yet.</p>';
+  if(currentTeacher) renderTeacherDashboard();
+};
+window.registerTeacher = async ()=>{
+  const name=document.getElementById("tName").value.trim(); const phone=document.getElementById("tPhone").value.trim(); const pin=document.getElementById("tPin").value.trim(); const subjects=document.getElementById("tSubjects").value.trim();
+  const grades=[...document.querySelectorAll(".tGrade:checked")].map(c=>c.value);
+  if(!name||!pin){ alert("Enter Teacher Name + PIN"); return; }
+  if(!grades.length){ alert("Tick at least 1 Grade"); return; }
+  try{ await addDoc(teachersCol, { name, phone, pin, subjects, grades, createdAt:Date.now() }); document.getElementById("tName").value=""; document.getElementById("tPhone").value=""; document.getElementById("tPin").value=""; document.getElementById("tSubjects").value=""; document.querySelectorAll(".tGrade").forEach(c=>c.checked=false); alert("✅ Teacher added: "+name); }catch(e){ alert("Teacher save failed: "+e.message); }
+};
+window.bulkRegisterTeachers = async ()=>{
+  const text=document.getElementById("bulkTeacherText").value.trim(); if(!text){ alert("Paste teachers first"); return; }
+  const lines=text.split("\n").filter(l=>l.trim()); if(!confirm("Register "+lines.length+" teachers?")) return;
+  let ok=0; for(let i=0;i<lines.length;i++){ const p=lines[i].split("|").map(x=>x.trim()); const name=p[0]||"", phone=p[1]||"", pin=p[2]||"", subjects=p[3]||""; const grades=(p[4]||"").split(",").map(x=>x.trim()).filter(Boolean); if(!name||!pin) continue; try{ await addDoc(teachersCol, {name, phone, pin, subjects, grades, createdAt:Date.now()}); ok++; }catch(e){} }
+  document.getElementById("bulkTeacherStatus").textContent="✅ Registered: "+ok+" teachers"; document.getElementById("bulkTeacherText").value=""; alert("✅ Bulk Teachers Done: "+ok);
+};
+window.teacherLogin = async ()=>{
+  const id=document.getElementById("teacherSelect").value; const pin=document.getElementById("teacherPin").value.trim(); const t=teachers.find(x=>x.id===id);
+  if(!t){ alert("Select a teacher"); return; } if(t.pin!==pin){ alert("❌ Wrong PIN for "+t.name); return; }
+  currentTeacher=t; try{localStorage.setItem('ACADEMY_TEACHER', JSON.stringify(t));}catch(e){} document.getElementById("teacherPin").value=""; renderTeacherDashboard();
+  try{ await addDoc(logCol, { teacherId:t.id, teacherName:t.name, grades:t.grades||[], action:"LOGIN", at:new Date().toLocaleString("en-ZA"), createdAt:Date.now() }); }catch(e){}
+  alert("✅ Welcome, "+t.name+"\nYou monitor: "+(t.grades||[]).join(", "));
+};
+window.teacherLogout = async ()=>{
+  if(currentTeacher){ try{ await addDoc(logCol, { teacherId:currentTeacher.id, teacherName:currentTeacher.name, grades:currentTeacher.grades||[], action:"LOGOUT", at:new Date().toLocaleString("en-ZA"), createdAt:Date.now() }); }catch(e){} }
+  currentTeacher=null; try{localStorage.removeItem('ACADEMY_TEACHER');}catch(e){}
+  document.getElementById("teacherDashboard").style.display="none"; document.getElementById("teacherStatus").textContent="Not logged in as teacher."; renderTracking();
+};
+window.renderTeacherDashboard = function(){
+  if(!currentTeacher) return;
+  document.getElementById("teacherStatus").textContent="✅ Logged in: "+currentTeacher.name+" — Monitoring: "+(currentTeacher.grades||[]).join(", ");
+  document.getElementById("teacherDashboard").style.display="block"; document.getElementById("teacherDashName").textContent=currentTeacher.name+" — "+(currentTeacher.grades||[]).join(", ");
+  const myLearners = learners.filter(l=> (currentTeacher.grades||[]).includes(l.grade));
+  const pass=myLearners.filter(l=>l.total>0&&l.score/l.total>=0.5).length; const fail=myLearners.filter(l=>l.total>0&&l.score/l.total<0.5).length; const never=myLearners.filter(l=>!l.total).length;
+  document.getElementById("teacherDashStats").innerHTML=`My Learners: <b>${myLearners.length}</b> | Pass: <b style="color:#059669">${pass}</b> | Needs Help: <b style="color:#dc2626">${fail}</b> | Never Practised: <b>${never}</b>`;
+  const sorted=myLearners.slice().sort((a,b)=>{const aa=a.total?a.score/a.total:0;const bb=b.total?b.score/b.total:0;return bb-aa;});
+  document.getElementById("teacherDashList").innerHTML=sorted.map(l=>{ const c=learnerCombined(l.id); const acc=l.total?Math.round(l.score/l.total*100):0; const phone=(l.phone||"").replace(/\D/g,"").replace(/^0/,"27"); return `<div class="qcard"><b>${l.name}</b> — ${l.grade}<br><span class="badge ${acc>=50?'':'badge-red'}">App: ${acc}% — ${l.score}/${l.total}</span> ${c.schoolAvg!==null?'<span class="badge" style="background:#ccfbf1;color:#115e59">School: '+Math.round(c.schoolAvg)+'%</span>':''}<br><small>Parent: ${l.parent||"-"}<br>Last: ${l.lastActive||"-"}</small><br>${phone?`<button class="green" onclick="shareLearnerToParent('${l.id}')">📩 SEND TO PARENT</button>`:''}</div>`; }).join('')||'<p>No learners in your grades yet.</p>';
+};
+window.exportMyLearners = ()=>{
+  if(!currentTeacher){ alert("Login as teacher first"); return; }
+  const myLearners=learners.filter(l=>(currentTeacher.grades||[]).includes(l.grade));
+  const txt=`👩🏽‍🏫 MAKHANANI ACADEMY — TEACHER REPORT\nTeacher: ${currentTeacher.name}\nGrades: ${(currentTeacher.grades||[]).join(", ")}\n\n`+myLearners.map(l=>{const c=learnerCombined(l.id);const acc=l.total?Math.round(l.score/l.total*100):0;return `${l.name} — ${l.grade} — App: ${l.score}/${l.total} (${acc}%) — School: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'-'} — Combined: ${c.combined!==null?c.combined+'%':'-'}`;}).join('\n');
+  const phone=(currentTeacher.phone||"").replace(/\D/g,"").replace(/^0/,"27"); window.open('https://wa.me/'+(phone||'27780233263')+'?text='+encodeURIComponent(txt),'_blank');
+};
+window.sendTeacherInvite = (id)=>{
+  const t=teachers.find(x=>x.id===id); if(!t) return; const phone=(t.phone||"").replace(/\D/g,"").replace(/^0/,"27");
+  const msg=`👩🏽‍🏫 MAKHANANI ACADEMY — TEACHER INVITE\n\nHi ${t.name},\nYou are now a Monitoring Teacher.\nGrades: ${(t.grades||[]).join(", ")}\nSubjects: ${t.subjects||"-"}\nPIN: ${t.pin}\n\nOpen:\nhttps://vusichauke3037-glitch.github.io/MAKHANANI-ACADEMY/\nTap TEACHERS → Select your name → Enter PIN.\n\nMr Vusi Chauke — 078 023 3263`;
+  if(phone) window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank'); else alert(msg);
+};
+// PRINCIPAL
+window._principalUnlocked=false;
+window.principalLogin = ()=>{
+  const pin=document.getElementById("principalPin").value.trim();
+  if(pin!=="0780"){ alert("❌ Wrong Principal PIN"); return; }
+  window._principalUnlocked=true;
+  document.getElementById("principalLoginBox").style.display="none";
+  document.getElementById("principalDashboard").style.display="block";
+  document.getElementById("principalPin").value="";
+  renderPrincipal();
+};
+window.principalLogout = ()=>{ window._principalUnlocked=false; document.getElementById("principalLoginBox").style.display="block"; document.getElementById("principalDashboard").style.display="none"; };
+window.renderPrincipal = function(){
+  if(!window._principalUnlocked) return;
+  const totalLearners=learners.length;
+  const practised=learners.filter(l=>l.total>0).length;
+  const never=totalLearners-practised;
+  const pass=learners.filter(l=>l.total>0&&l.score/l.total>=0.5).length;
+  const fail=learners.filter(l=>l.total>0&&l.score/l.total<0.5).length;
+  const totalMarks=schoolMarks.length;
+  document.getElementById("principalStats").innerHTML=`Learners: <b>${totalLearners}</b> | Practised: <b style="color:#059669">${practised}</b> | Never Practised: <b style="color:#dc2626">${never}</b> | Pass: <b>${pass}</b> | Needs Help: <b>${fail}</b> | School Marks Entered: <b>${totalMarks}</b> | Teachers: <b>${teachers.length}</b>`;
+  document.getElementById("principalTeachers").innerHTML=teachers.map(t=>{
+    const my=learners.filter(l=>(t.grades||[]).includes(l.grade));
+    const myPractised=my.filter(l=>l.total>0).length;
+    const lastLog=teacherLog.filter(x=>x.teacherId===t.id)[0];
+    const lastStr=lastLog? lastLog.at+' — '+lastLog.action : 'Never logged in ❌';
+    const active = lastLog ? '✅ Active' : '⚠️ NEVER LOGGED IN';
+    return `<div class="qcard"><b>${t.name}</b> — ${(t.grades||[]).join(", ")} — ${t.subjects||""}<br><small>My Learners: ${my.length} | Practised: ${myPractised} | Never: ${my.length-myPractised}<br>Last Login: ${lastStr}<br><b>${active}</b></small></div>`;
+  }).join('')||'<p>No teachers yet.</p>';
+  document.getElementById("principalLog").innerHTML=teacherLog.slice(0,20).map(x=>`<div class="qcard" style="padding:8px"><small>${x.at} — <b>${x.teacherName}</b> — ${x.action} — ${(x.grades||[]).join(", ")}</small></div>`).join('')||'<p>No teacher logins yet.</p>';
+  const sorted=learners.slice().sort((a,b)=>{const aa=learnerCombined(a.id).combined||-1; const bb=learnerCombined(b.id).combined||-1; return bb-aa;});
+  document.getElementById("principalWeekly").innerHTML=`Top learners by Combined (App + School):`;
+  document.getElementById("principalLearners").innerHTML=sorted.map(l=>{ const c=learnerCombined(l.id); const acc=l.total?Math.round(l.score/l.total*100):0; return `<div class="qcard"><b>${l.name}</b> — ${l.grade}<br><span class="badge">App: ${acc}%</span> ${c.schoolAvg!==null?'<span class="badge" style="background:#ccfbf1;color:#115e59">School: '+Math.round(c.schoolAvg)+'%</span>':''} ${c.combined!==null?'<span class="badge" style="background:#fef3c7;color:#92400e">Combined: '+c.combined+'%</span>':''}<br><small>Last: ${l.lastActive||"-"}</small></div>`; }).join('')||'<p>No learners.</p>';
+};
+window.exportPrincipalReport = ()=>{
+  const txt=`👑 MAKHANANI ACADEMY — PRINCIPAL WEEKLY REPORT\n\nLearners: ${learners.length} | Practised: ${learners.filter(l=>l.total>0).length} | Never: ${learners.filter(l=>!l.total).length}\nSchool Marks: ${schoolMarks.length}\n\nTEACHERS:\n`+teachers.map(t=>{ const my=learners.filter(l=>(t.grades||[]).includes(l.grade)); const last=teacherLog.filter(x=>x.teacherId===t.id)[0]; return `${t.name} — ${(t.grades||[]).join(", ")} — Learners: ${my.length} — Last Login: ${last?last.at:'NEVER'}`; }).join('\n')+`\n\nTOP LEARNERS (Combined):\n`+learners.slice().sort((a,b)=>(learnerCombined(b.id).combined||-1)-(learnerCombined(a.id).combined||-1)).slice(0,10).map(l=>{const c=learnerCombined(l.id);return `${l.name} — ${l.grade} — Combined: ${c.combined!==null?c.combined+'%':'-'}`;}).join('\n')+`\n\nNEEDS HELP:\n`+learners.filter(l=>{const c=learnerCombined(l.id);return c.combined!==null&&c.combined<50;}).map(l=>`${l.name} — ${l.grade} — ${learnerCombined(l.id).combined}%`).join('\n');
+  window.open('https://wa.me/27780233263?text='+encodeURIComponent(txt),'_blank');
+};
+// MARKS
+window.renderMarks = function(){
+  const sel=document.getElementById("markLearner"); if(!sel) return;
+  sel.innerHTML=learners.map(l=>`<option value="${l.id}">${l.name} — ${l.grade}</option>`).join('')||'<option value="">No learners</option>';
+  const fsel=document.getElementById("markFilterLearner"); if(fsel){ const cur=fsel.value; fsel.innerHTML='<option value="ALL">All Learners</option>'+learners.map(l=>`<option value="${l.id}">${l.name} — ${l.grade}</option>`).join(''); if(cur) fsel.value=cur; }
+  const filter=document.getElementById("markFilterLearner")?document.getElementById("markFilterLearner").value:"ALL";
+  const filtered=schoolMarks.filter(m=>filter==="ALL"||m.learnerId===filter);
+  document.getElementById("markList").innerHTML=filtered.map(m=>{ const l=learners.find(x=>x.id===m.learnerId); return `<div class="qcard"><b>${l?l.name:'Unknown'}</b> — ${m.subject} — ${m.term} — ${m.testType}<br><span class="badge ${m.pct>=50?'':'badge-red'}">${m.score} / ${m.total} = ${Math.round(m.pct)}%</span><br><small>By: ${m.enteredBy||"-"} | ${m.at||""}</small></div>`; }).join('')||'<p>No school marks yet.</p>';
+};
+window.addSchoolMark = async ()=>{
+  const learnerId=document.getElementById("markLearner").value;
+  const subject=document.getElementById("markSubject").value;
+  const term=document.getElementById("markTerm").value;
+  const testType=document.getElementById("markType").value;
+  const scoreNum=Number(document.getElementById("markScore").value);
+  const totalNum=Number(document.getElementById("markTotal").value)||100;
+  const enteredBy=document.getElementById("markTeacher").value.trim()||(currentTeacher?currentTeacher.name:"Mr Chauke");
+  if(!learnerId||isNaN(scoreNum)){ alert("Select learner + enter mark"); return; }
+  const l=learners.find(x=>x.id===learnerId);
+  const pct=scoreNum/totalNum*100;
+  try{
+    await addDoc(marksCol, { learnerId, learnerName:l?l.name:"", grade:l?l.grade:"", subject, term, testType, score:scoreNum, total:totalNum, pct:Math.round(pct*10)/10, enteredBy, at:new Date().toLocaleString("en-ZA"), createdAt:Date.now() });
+    document.getElementById("markStatus").textContent="✅ Saved: "+(l?l.name:"")+" — "+subject+" — "+scoreNum+"/"+totalNum+" = "+Math.round(pct)+"%";
+    document.getElementById("markScore").value="";
+    const phone=(l&&l.phone?l.phone:"").replace(/\D/g,"").replace(/^0/,"27");
+    if(phone && confirm("Send this school mark to parent on WhatsApp?")){ const parentLink=location.href.split('?')[0]+'?learner='+learnerId+'&view=parent'; window.open('https://wa.me/'+phone+'?text='+encodeURIComponent('📝 MAKHANANI ACADEMY — NEW SCHOOL MARK\n\nLearner: '+(l?l.name:'')+'\nSubject: '+subject+'\n'+term+' — '+testType+'\nMark: '+scoreNum+'/'+totalNum+' = '+Math.round(pct)+'%\n\nView full report:\n'+parentLink),'_blank'); }
+  }catch(e){ alert("Save mark failed: "+e.message); }
+};
+// LEARNERS
 window.registerLearner = async ()=>{
-  const name=document.getElementById("ltName").value.trim();
-  const g=document.getElementById("ltGrade").value;
-  const parent=document.getElementById("ltParent").value.trim();
-  const phone=document.getElementById("ltPhone").value.trim();
+  const name=document.getElementById("ltName").value.trim(); const g=document.getElementById("ltGrade").value; const parent=document.getElementById("ltParent").value.trim(); const phone=document.getElementById("ltPhone").value.trim();
   if(!name){ alert("Enter learner name"); return; }
-  try{
-    const ref = await addDoc(learnersCol, { name, grade:g, parent, phone, score:0, total:0, subjects:{}, hardDone:0, lastActive:new Date().toLocaleString("en-ZA"), createdAt:Date.now() });
-    currentLearnerId = ref.id;
-    try{localStorage.setItem("ACADEMY_CURRENT_LEARNER", ref.id);}catch(e){}
-    score=0; total=0; saveScore(); updateScore();
-    document.getElementById("ltName").value=""; document.getElementById("ltParent").value=""; document.getElementById("ltPhone").value="";
-    alert("✅ Cloud: Learner registered: "+name+"\n\nID: "+ref.id+"\nProject: xintimani-academy\nNow practise — teacher will see you live.");
-    showTab("practice");
-  }catch(e){ alert("Cloud save failed: "+e.message+"\n\nCheck Firestore Rules in xintimani-academy"); }
+  try{ const ref = await addDoc(learnersCol, { name, grade:g, parent, phone, score:0, total:0, subjects:{}, hardDone:0, lastActive:new Date().toLocaleString("en-ZA"), createdAt:Date.now() }); currentLearnerId = ref.id; try{localStorage.setItem("ACADEMY_CURRENT_LEARNER", ref.id);}catch(e){} score=0; total=0; saveScore(); updateScore(); document.getElementById("ltName").value=""; document.getElementById("ltParent").value=""; document.getElementById("ltPhone").value=""; alert("✅ Cloud: Learner registered: "+name); showTab("practice"); }catch(e){ alert("Cloud save failed: "+e.message); }
 };
-window.selectLearner = (id)=>{
-  currentLearnerId = id;
-  try{localStorage.setItem("ACADEMY_CURRENT_LEARNER", id);}catch(e){}
-  const l = getCurrentLearner();
-  if(l){ score=l.score||0; total=l.total||0; saveScore(); updateScore(); const gnum=parseInt((l.grade||"Grade 10").replace(/\D/g,""))||10; setGrade(gnum); }
-  updateLearnerBar(); renderTracking();
+window.bulkRegister = async ()=>{
+  const text=document.getElementById("bulkText").value.trim(); if(!text){ alert("Paste learners first"); return; }
+  const lines=text.split("\n").filter(l=>l.trim()); const statusEl2=document.getElementById("bulkStatus"); if(!confirm("Register "+lines.length+" learners?")) return;
+  let ok=0, fail=0; for(let i=0;i<lines.length;i++){ const parts=lines[i].split("|").map(p=>p.trim()); const name=parts[0]||"", g=parts[1]||"Grade 10", parent=parts[2]||"", phone=parts[3]||""; if(!name){ fail++; continue; } try{ await addDoc(learnersCol, { name, grade:g, parent, phone, score:0, total:0, subjects:{}, hardDone:0, lastActive:"Never - Bulk Registered", createdAt:Date.now() }); ok++; if(statusEl2) statusEl2.textContent="⏳ "+ok+" / "+lines.length; }catch(e){ fail++; } }
+  if(statusEl2) statusEl2.textContent="✅ Done! "+ok+" | Failed: "+fail; document.getElementById("bulkText").value=""; alert("✅ Bulk Done: "+ok);
 };
+window.selectLearner = (id)=>{ currentLearnerId = id; try{localStorage.setItem("ACADEMY_CURRENT_LEARNER", id);}catch(e){} const l = getCurrentLearner(); if(l){ score=l.score||0; total=l.total||0; saveScore(); updateScore(); const gnum=parseInt((l.grade||"Grade 10").replace(/\D/g,""))||10; setGrade(gnum); } updateLearnerBar(); renderTracking(); };
 window.cloudTrack = async (isCorrect, subject)=>{
-  const l = getCurrentLearner(); if(!l) return;
-  const subjects = {...(l.subjects||{})};
-  subjects[subject] = subjects[subject]||{score:0,total:0};
-  subjects[subject].total++;
-  if(isCorrect) subjects[subject].score++;
-  try{
-    await updateDoc(doc(db,"academy_cloud_learners", l.id), {
-      score:score, total:total, subjects,
-      lastActive:new Date().toLocaleString("en-ZA"),
-      hardDone:Object.keys(hardDone).length
-    });
-    await addDoc(attemptsCol, {
-      learnerId:l.id, learnerName:l.name, grade:l.grade,
-      subject:subject||curSubject, topic:curTopic, correct:isCorrect,
-      createdAt:Date.now()
-    });
-  }catch(e){ console.log("Cloud track failed", e); }
+  const l = getCurrentLearner(); if(!l) return; const subjects = {...(l.subjects||{})}; subjects[subject] = subjects[subject]||{score:0,total:0}; subjects[subject].total++; if(isCorrect) subjects[subject].score++;
+  try{ await updateDoc(doc(db,"academy_cloud_learners", l.id), { score:score, total:total, subjects, lastActive:new Date().toLocaleString("en-ZA"), hardDone:Object.keys(hardDone).length }); await addDoc(attemptsCol, { learnerId:l.id, learnerName:l.name, grade:l.grade, subject:subject||curSubject, topic:curTopic, correct:isCorrect, createdAt:Date.now() }); }catch(e){ console.log("Cloud track failed", e); }
 };
-window.cloudReset = async ()=>{
-  const l = getCurrentLearner(); if(!l) return;
-  try{ await updateDoc(doc(db,"academy_cloud_learners", l.id), {score:0,total:0,subjects:{},hardDone:0,lastActive:new Date().toLocaleString("en-ZA")}); }catch(e){}
-};
+window.cloudReset = async ()=>{ const l = getCurrentLearner(); if(!l) return; try{ await updateDoc(doc(db,"academy_cloud_learners", l.id), {score:0,total:0,subjects:{},hardDone:0,lastActive:new Date().toLocaleString("en-ZA")}); }catch(e){} };
 </script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(e){console.log('SW:',e);});}</script>
 </body></html>
