@@ -33,6 +33,17 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 </header>
 <div id="installBox" style="display:none;background:#d4af37;color:#0a1f4d;padding:12px;text-align:center;font-weight:800;border-bottom:3px solid #0a1f4d">📲 DOWNLOAD APP — Makhanani Academy<br><button id="installBtn" style="background:#0a1f4d;color:#fff;border:none;padding:12px 20px;border-radius:10px;font-weight:800;margin-top:8px;cursor:pointer">📲 INSTALL APP NOW</button></div>
 <script>let deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;document.getElementById('installBox').style.display='block';});document.getElementById('installBtn').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;document.getElementById('installBox').style.display='none';});}else{alert('Android Chrome: Tap Menu ⋮ → Add to Home Screen / Install App\n\niPhone Safari: Tap Share ↑ → Add to Home Screen');}});</script>
+
+<!-- BIG LOGIN BAR - ALWAYS VISIBLE - FIX FOR BOTH LOGINS -->
+<div style="background:#dc2626;padding:12px;text-align:center;position:sticky;top:0;z-index:999;border-bottom:4px solid #d4af37">
+  <div style="color:#fff;font-weight:900;font-size:14px;margin-bottom:8px">🔐 LOGIN HERE — TAP ONE BELOW</div>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button onclick="showTab('principal');setTimeout(function(){var el=document.getElementById('principalLoginBox');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},300)" style="background:#fff;color:#dc2626;padding:14px 18px;font-size:15px;border-radius:12px;font-weight:900;border:3px solid #d4af37;flex:1;min-width:140px">👑 PRINCIPAL<br><span style="font-size:11px">LOGIN</span></button>
+    <button onclick="showTab('teachers');setTimeout(function(){var el=document.getElementById('teacherLoginBox');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},300)" style="background:#d4af37;color:#0a1f4d;padding:14px 18px;font-size:15px;border-radius:12px;font-weight:900;border:3px solid #fff;flex:1;min-width:140px">👩🏽‍🏫 TEACHER<br><span style="font-size:11px">LOGIN</span></button>
+  </div>
+  <div style="color:#fff;font-size:11px;margin-top:6px">Principal PIN = Your Secret PIN &nbsp;|&nbsp; Teacher PIN = PIN Mr Chauke gave you</div>
+</div>
+
 <div class="topbar">
 <button class="purple" onclick="showTab('learn')">📚 SUBJECTS</button><button class="green" onclick="showTab('practice')">✍️ PRACTICE</button><button class="red" onclick="startHard()">🔥 HARD MODE</button><button class="gold" onclick="showTab('papers')">🎓 PAPERS</button><button class="blue" onclick="showTab('tips')">💡 TIPS</button><button class="teal" onclick="showTab('progress')">📊 MY SCORE</button>
 <button class="dark" onclick="showTab('tracking')">👤 LEARNER TRACKING ☁️</button>
@@ -47,10 +58,12 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="tab-principal" class="hidden">
   <div class="card" style="border:3px solid #dc2626">
     <h2>👑 PRINCIPAL DASHBOARD — Mr Vusi Chauke Only</h2>
-    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one.</p>
-    <div id="principalLoginBox">
-      <input id="principalPin" type="password" inputmode="numeric" placeholder="Enter Principal PIN — 0780">
-      <button class="red" style="width:100%" onclick="principalLogin()">👑 UNLOCK PRINCIPAL DASHBOARD</button>
+    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one. This is your login.</p>
+    <div id="principalLoginBox" style="background:#fef2f2;border:3px solid #dc2626;border-radius:14px;padding:14px">
+      <label style="font-weight:900">👑 PRINCIPAL PIN</label>
+      <input id="principalPin" type="password" inputmode="numeric" placeholder="Enter Principal PIN — 0780" style="font-size:18px;padding:16px">
+      <button class="red" style="width:100%;padding:18px;font-size:18px;border:3px solid #d4af37" onclick="principalLogin()">👑 UNLOCK PRINCIPAL DASHBOARD — TAP TO LOGIN</button>
+      <p style="font-size:12px">If button does nothing, check PIN. Default is 0780 unless you changed it.</p>
     </div>
     <div id="principalDashboard" style="display:none">
       <h3>📊 Whole Academy — This Week</h3>
@@ -87,7 +100,7 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="tab-marks" class="hidden">
   <div class="card" style="border:3px solid #0d9488">
     <h2>📝 SCHOOL MARKS — Real Test / Exam Marks</h2>
-    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school. It shows together with app practice in ONE report.</p>
+    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school.</p>
     <label><b>Learner</b></label><select id="markLearner"></select>
     <select id="markSubject"><option>Mathematics</option><option>Maths Lit</option><option>Physical Sciences</option><option>Natural Sciences</option><option>English</option><option>isiZulu</option><option>Afrikaans</option><option>Life Skills</option><option>Social Sciences</option><option>Technology</option></select>
     <select id="markTerm"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select>
@@ -106,7 +119,13 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
   <div class="card" style="border:3px solid #d4af37">
     <h2>👩🏽‍🏫 Teachers — Monitoring</h2>
     <p id="teacherStatus" style="font-size:13px;font-weight:800">Not logged in as teacher — Select below or register.</p>
-    <div id="teacherLoginBox"><label><b>Select Teacher</b></label><select id="teacherSelect"></select><input id="teacherPin" type="password" inputmode="numeric" placeholder="Enter Teacher PIN — e.g. 1234"><button class="gold" style="width:100%" onclick="teacherLogin()">🔓 LOGIN AS TEACHER + VIEW MY GRADES</button><button class="dark" style="width:100%;margin-top:8px" onclick="teacherLogout()">🚪 LOGOUT TEACHER</button></div>
+    <div id="teacherLoginBox" style="background:#fffbeb;border:3px solid #d4af37;border-radius:14px;padding:14px">
+      <label><b>Select Teacher</b></label><select id="teacherSelect"></select>
+      <label style="font-weight:900">👩🏽‍🏫 TEACHER PIN</label>
+      <input id="teacherPin" type="password" inputmode="numeric" placeholder="Enter Teacher PIN — e.g. 1234" style="font-size:18px;padding:16px">
+      <button class="gold" style="width:100%;padding:18px;font-size:18px;border:3px solid #0a1f4d" onclick="teacherLogin()">🔓 LOGIN AS TEACHER — TAP TO LOGIN</button>
+      <button class="dark" style="width:100%;margin-top:8px" onclick="teacherLogout()">🚪 LOGOUT TEACHER</button>
+    </div>
     <div id="teacherDashboard" style="display:none"><h3>📊 My Monitoring Dashboard — <span id="teacherDashName"></span></h3><p id="teacherDashStats"></p><div id="teacherDashList"></div><button class="green" style="width:100%;margin-top:10px" onclick="exportMyLearners()">📩 EXPORT MY LEARNERS TO WHATSAPP</button></div>
   </div>
   <div class="card" style="border:3px solid #0a1f4d"><h2>➕ Add Teacher (Mr Chauke / Admin Only)</h2><input id="tName" placeholder="Teacher Full Name — e.g. Ms Dlamini"><input id="tPhone" placeholder="Teacher Phone — e.g. 0821234567"><input id="tPin" placeholder="Set PIN — e.g. 1234" type="password" inputmode="numeric"><input id="tSubjects" placeholder="Subjects — e.g. Maths Lit, Mathematics"><p><b>Grades This Teacher Monitors:</b></p><label><input type="checkbox" class="tGrade" value="Grade 8" style="width:auto"> Grade 8</label><br><label><input type="checkbox" class="tGrade" value="Grade 9" style="width:auto"> Grade 9</label><br><label><input type="checkbox" class="tGrade" value="Grade 10" style="width:auto"> Grade 10</label><br><label><input type="checkbox" class="tGrade" value="Grade 11" style="width:auto"> Grade 11</label><br><label><input type="checkbox" class="tGrade" value="Grade 12" style="width:auto"> Grade 12</label><br><button class="blue" style="width:100%;margin-top:10px" onclick="registerTeacher()">➕ ADD TEACHER TO CLOUD</button></div>
@@ -263,7 +282,7 @@ try{
     document.getElementById('mainView').style.display='none';
     document.getElementById('parentView').style.display='block';
   } else {
-    renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions + Cloud + Teachers + Principal + Marks + Parent + AUTO Reports';
+    renderSubjects();loadPractice();loadHard();updateScore();updateHardProgress();document.getElementById('statusLine').textContent='✅ Makhanani Academy Loaded OK — 1000 Questions + Cloud + Teachers + Principal + Marks + Parent + AUTO + BIG LOGIN BAR';
   }
 }catch(err){document.getElementById('statusLine').textContent='❌ Error: '+err.message;document.getElementById('statusLine').style.color='#dc2626';}
 </script>
@@ -403,7 +422,6 @@ window.renderPrincipal = function(){
   document.getElementById("principalWeekly").innerHTML=`Top learners by Combined (App + School):`;
   document.getElementById("principalLearners").innerHTML=sorted.map(l=>{ const c=learnerCombined(l.id); const acc=l.total?Math.round(l.score/l.total*100):0; return `<div class="qcard"><b>${l.name}</b> — ${l.grade}<br><span class="badge">App: ${acc}%</span> ${c.schoolAvg!==null?'<span class="badge" style="background:#ccfbf1;color:#115e59">School: '+Math.round(c.schoolAvg)+'%</span>':''} ${c.combined!==null?'<span class="badge" style="background:#fef3c7;color:#92400e">Combined: '+c.combined+'%</span>':''}<br><small>Last: ${l.lastActive||"-"}</small></div>`; }).join('')||'<p>No learners.</p>';
 };
-// ===== WEEKLY AUTO REPORTS =====
 var autoFilter = 'ALL';
 var autoSent = {};
 try{ autoSent = JSON.parse(localStorage.getItem('ACADEMY_AUTO_SENT')||'{}'); }catch(e){ autoSent={}; }
@@ -518,7 +536,6 @@ window.exportPrincipalReport = ()=>{
   const txt=buildPrincipalReport();
   window.open('https://wa.me/27780233263?text='+encodeURIComponent(txt),'_blank');
 };
-// ===== END AUTO REPORTS =====
 window.renderMarks = function(){
   const sel=document.getElementById("markLearner"); if(!sel) return;
   sel.innerHTML=learners.map(l=>`<option value="${l.id}">${l.name} — ${l.grade}</option>`).join('')||'<option value="">No learners</option>';
