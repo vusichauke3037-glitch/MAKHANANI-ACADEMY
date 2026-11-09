@@ -34,7 +34,7 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div id="installBox" style="display:none;background:#d4af37;color:#0a1f4d;padding:12px;text-align:center;font-weight:800;border-bottom:3px solid #0a1f4d">📲 DOWNLOAD APP — Makhanani Academy<br><button id="installBtn" style="background:#0a1f4d;color:#fff;border:none;padding:12px 20px;border-radius:10px;font-weight:800;margin-top:8px;cursor:pointer">📲 INSTALL APP NOW</button></div>
 <script>let deferredPrompt=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;document.getElementById('installBox').style.display='block';});document.getElementById('installBtn').addEventListener('click',function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;document.getElementById('installBox').style.display='none';});}else{alert('Android Chrome: Tap Menu ⋮ → Add to Home Screen / Install App\n\niPhone Safari: Tap Share ↑ → Add to Home Screen');}});</script>
 
-<!-- BIG LOGIN BAR - ALWAYS VISIBLE - FIX FOR BOTH LOGINS -->
+<!-- BIG LOGIN BAR - ALWAYS VISIBLE -->
 <div style="background:#dc2626;padding:12px;text-align:center;position:sticky;top:0;z-index:999;border-bottom:4px solid #d4af37">
   <div style="color:#fff;font-weight:900;font-size:14px;margin-bottom:8px">🔐 LOGIN HERE — TAP ONE BELOW</div>
   <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
@@ -54,75 +54,49 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
 <div class="wrap">
 <div class="card" style="text-align:center;border:3px solid #d4af37;margin-top:14px"><span class="badge" style="display:block;background:#fef3c7;color:#92400e">🎓 MAKHANANI ACADEMY — CHOOSE SUBJECT → TOPIC → PRACTICE Q1-Q100</span><h2>Grade: <span id="curGrade">10</span> • Subject: <span id="curSubjectLabel">MATHS LIT</span> • Topic: <span id="curTopicLabel">FINANCE</span> • Q: <span id="curQLabel">1 / 100</span> • Score: <span id="scoreTop">0</span> / <span id="totalTop">0</span></h2><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="purple" onclick="setGrade(8)">GRADE 8</button><button class="purple" onclick="setGrade(9)">GRADE 9</button><button class="purple" onclick="setGrade(10)">GRADE 10</button><button class="purple" onclick="setGrade(11)">GRADE 11</button><button class="red" onclick="setGrade(12)">GRADE 12</button></div><p id="statusLine" style="font-size:12px;color:#059669;font-weight:800">✅ Makhanani Academy Loaded — Tap a Subject Below</p></div>
 
-<!-- PRINCIPAL -->
 <div id="tab-principal" class="hidden">
   <div class="card" style="border:3px solid #dc2626">
     <h2>👑 PRINCIPAL DASHBOARD — Mr Vusi Chauke Only</h2>
-    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one. This is your login.</p>
+    <p style="font-size:12px">PIN: <b>0780</b> — Change this PIN in code if you want a different one.</p>
     <div id="principalLoginBox" style="background:#fef2f2;border:3px solid #dc2626;border-radius:14px;padding:14px">
       <label style="font-weight:900">👑 PRINCIPAL PIN</label>
       <input id="principalPin" type="password" inputmode="numeric" placeholder="Enter Principal PIN — 0780" style="font-size:18px;padding:16px">
       <button class="red" style="width:100%;padding:18px;font-size:18px;border:3px solid #d4af37" onclick="principalLogin()">👑 UNLOCK PRINCIPAL DASHBOARD — TAP TO LOGIN</button>
-      <p style="font-size:12px">If button does nothing, check PIN. Default is 0780 unless you changed it.</p>
     </div>
     <div id="principalDashboard" style="display:none">
-      <h3>📊 Whole Academy — This Week</h3>
-      <p id="principalStats"></p>
-      <h3>👩🏽‍🏫 Teachers — Who Is Monitoring?</h3>
-      <div id="principalTeachers"></div>
-      <h3>📅 Teacher Login History (Last 20)</h3>
-      <div id="principalLog"></div>
-      <h3>📚 Learners — Weekly Report</h3>
-      <p id="principalWeekly"></p>
-      <div id="principalLearners"></div>
+      <h3>📊 Whole Academy — This Week</h3><p id="principalStats"></p>
+      <h3>👩🏽‍🏫 Teachers — Who Is Monitoring?</h3><div id="principalTeachers"></div>
+      <h3>📅 Teacher Login History (Last 20)</h3><div id="principalLog"></div>
+      <h3>📚 Learners — Weekly Report</h3><p id="principalWeekly"></p><div id="principalLearners"></div>
       <button class="green" style="width:100%" onclick="exportPrincipalReport()">📩 EXPORT PRINCIPAL WEEKLY REPORT TO WHATSAPP</button>
       <button class="gold" style="width:100%;margin-top:10px" onclick="generateAutoReports()">🤖 GENERATE WEEKLY AUTO-REPORTS — ALL TEACHERS + ALL PARENTS</button>
       <div id="autoReportsBox" style="display:none;margin-top:12px;border:3px dashed #d4af37;border-radius:14px;padding:12px;background:#fffbeb">
-        <h3>🤖 Weekly Auto-Reports — Ready To Send</h3>
-        <p id="autoProgress" style="font-size:12px;font-weight:800"></p>
+        <h3>🤖 Weekly Auto-Reports — Ready To Send</h3><p id="autoProgress" style="font-size:12px;font-weight:800"></p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-          <button class="blue" onclick="filterAutoReports('ALL')">ALL</button>
-          <button class="dark" onclick="filterAutoReports('PRINCIPAL')">👑 PRINCIPAL ONLY</button>
-          <button class="dark" onclick="filterAutoReports('TEACHER')">👩🏽‍🏫 TEACHERS ONLY</button>
-          <button class="dark" onclick="filterAutoReports('PARENT')">👨‍👩‍👧 PARENTS ONLY</button>
-          <button class="dark" onclick="filterAutoReports('NEEDS_HELP')">⚠️ NEEDS HELP ONLY</button>
-          <button class="dark" onclick="filterAutoReports('NEVER')">😴 NEVER PRACTISED ONLY</button>
-        </div>
-        <div id="autoReportsList"></div>
-        <button class="dark" style="width:100%;margin-top:10px" onclick="markAllAutoSent()">✅ MARK ALL AS SENT (Clear List)</button>
+          <button class="blue" onclick="filterAutoReports('ALL')">ALL</button><button class="dark" onclick="filterAutoReports('PRINCIPAL')">👑 PRINCIPAL ONLY</button><button class="dark" onclick="filterAutoReports('TEACHER')">👩🏽‍🏫 TEACHERS ONLY</button><button class="dark" onclick="filterAutoReports('PARENT')">👨‍👩‍👧 PARENTS ONLY</button><button class="dark" onclick="filterAutoReports('NEEDS_HELP')">⚠️ NEEDS HELP ONLY</button><button class="dark" onclick="filterAutoReports('NEVER')">😴 NEVER PRACTISED ONLY</button>
+        </div><div id="autoReportsList"></div><button class="dark" style="width:100%;margin-top:10px" onclick="markAllAutoSent()">✅ MARK ALL AS SENT (Clear List)</button>
       </div>
       <button class="dark" style="width:100%;margin-top:8px" onclick="principalLogout()">🚪 LOCK PRINCIPAL DASHBOARD</button>
     </div>
   </div>
 </div>
 
-<!-- SCHOOL MARKS -->
 <div id="tab-marks" class="hidden">
-  <div class="card" style="border:3px solid #0d9488">
-    <h2>📝 SCHOOL MARKS — Real Test / Exam Marks</h2>
-    <p style="font-size:12px">This is NOT app practice. This is the mark learner got at school.</p>
+  <div class="card" style="border:3px solid #0d9488"><h2>📝 SCHOOL MARKS — Real Test / Exam Marks</h2><p style="font-size:12px">This is NOT app practice. This is the mark learner got at school.</p>
     <label><b>Learner</b></label><select id="markLearner"></select>
     <select id="markSubject"><option>Mathematics</option><option>Maths Lit</option><option>Physical Sciences</option><option>Natural Sciences</option><option>English</option><option>isiZulu</option><option>Afrikaans</option><option>Life Skills</option><option>Social Sciences</option><option>Technology</option></select>
     <select id="markTerm"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select>
     <select id="markType"><option>Test</option><option>Exam</option><option>Assignment</option><option>Homework</option><option>Project</option><option>June Exam</option><option>Sept Exam</option><option>Final Exam</option></select>
-    <input id="markScore" type="number" placeholder="Mark Obtained — e.g. 72">
-    <input id="markTotal" type="number" value="100" placeholder="Total — e.g. 100">
-    <input id="markTeacher" placeholder="Entered by Teacher — e.g. Ms Dlamini">
-    <button class="teal" style="width:100%" onclick="addSchoolMark()">✅ SAVE SCHOOL MARK TO CLOUD</button>
-    <p id="markStatus" style="font-size:12px;font-weight:800"></p>
-  </div>
+    <input id="markScore" type="number" placeholder="Mark Obtained — e.g. 72"><input id="markTotal" type="number" value="100" placeholder="Total — e.g. 100"><input id="markTeacher" placeholder="Entered by Teacher — e.g. Ms Dlamini">
+    <button class="teal" style="width:100%" onclick="addSchoolMark()">✅ SAVE SCHOOL MARK TO CLOUD</button><p id="markStatus" style="font-size:12px;font-weight:800"></p></div>
   <div class="card"><h2>📋 All School Marks — Cloud</h2><select id="markFilterLearner" onchange="renderMarks()"><option value="ALL">All Learners</option></select><div id="markList"></div></div>
 </div>
 
-<!-- TEACHERS -->
 <div id="tab-teachers" class="hidden">
-  <div class="card" style="border:3px solid #d4af37">
-    <h2>👩🏽‍🏫 Teachers — Monitoring</h2>
-    <p id="teacherStatus" style="font-size:13px;font-weight:800">Not logged in as teacher — Select below or register.</p>
+  <div class="card" style="border:3px solid #d4af37"><h2>👩🏽‍🏫 Teachers — Monitoring</h2><p id="teacherStatus" style="font-size:13px;font-weight:800">Not logged in as teacher — Select below or register.</p>
     <div id="teacherLoginBox" style="background:#fffbeb;border:3px solid #d4af37;border-radius:14px;padding:14px">
       <label><b>Select Teacher</b></label><select id="teacherSelect"></select>
-      <label style="font-weight:900">👩🏽‍🏫 TEACHER PIN</label>
-      <input id="teacherPin" type="password" inputmode="numeric" placeholder="Enter Teacher PIN — e.g. 1234" style="font-size:18px;padding:16px">
+      <label style="font-weight:900">👩🏽‍🏫 TEACHER PIN</label><input id="teacherPin" type="password" inputmode="numeric" placeholder="Enter Teacher PIN — e.g. 1234" style="font-size:18px;padding:16px">
       <button class="gold" style="width:100%;padding:18px;font-size:18px;border:3px solid #0a1f4d" onclick="teacherLogin()">🔓 LOGIN AS TEACHER — TAP TO LOGIN</button>
       <button class="dark" style="width:100%;margin-top:8px" onclick="teacherLogout()">🚪 LOGOUT TEACHER</button>
     </div>
@@ -133,7 +107,6 @@ button,a.btn{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;fon
   <div class="card"><h2>👩🏽‍🏫 All Teachers</h2><div id="teacherList"></div></div>
 </div>
 
-<!-- LEARNER TRACKING -->
 <div id="tab-tracking" class="hidden">
   <div class="card" style="border:3px solid #0a1f4d"><h2>👤 Learner Tracking — ☁️ CLOUD</h2><p class="cloud">● LIVE SYNC — When a learner practises at home, you see it here instantly.</p><input id="ltName" placeholder="Learner Full Name — e.g. Thabo Nkosi"><select id="ltGrade"><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select><input id="ltParent" placeholder="Parent Name"><input id="ltPhone" placeholder="Parent Phone — e.g. 0780233263"><button class="green" style="width:100%" onclick="registerLearner()">➕ REGISTER LEARNER IN CLOUD + SELECT</button><div style="background:#fefce8;padding:12px;border-radius:12px;margin-top:12px;border:2px dashed #d4af37"><h3>📋 BULK REGISTER — Paste List</h3><p style="font-size:12px">One learner per line: <b>Name | Grade | Parent | Phone</b></p><textarea id="bulkText" rows="6" placeholder="Thabo Nkosi | Grade 10 | Maria Nkosi | 0781234567"></textarea><button class="gold" style="width:100%" onclick="bulkRegister()">📋 REGISTER ALL FROM LIST ☁️</button><p id="bulkStatus" style="font-size:12px;font-weight:800"></p></div></div>
   <div class="card"><h2>📋 Select Learner (This Phone)</h2><select id="ltSelect" onchange="selectLearner(this.value)"></select><button class="blue" style="width:100%" onclick="renderTracking()">🔄 REFRESH DASHBOARD</button><button class="purple" style="width:100%;margin-top:8px" onclick="copyLearnerLink()">🔗 COPY MY LEARNER LINK</button><button class="green" style="width:100%;margin-top:8px" onclick="copyParentLink()">👨‍👩‍👧 COPY PARENT REPORT LINK (Parent Sees Only Their Child)</button></div>
@@ -214,14 +187,7 @@ function renderParentView(){
   var subj=Object.keys(l.subjects||{}).map(function(k){return '<tr><td>'+k+'</td><td>'+l.subjects[k].score+' / '+l.subjects[k].total+'</td><td>'+Math.round(l.subjects[k].score/l.subjects[k].total*100)+'%</td></tr>';}).join('');
   var marksHtml=c.schoolMarks.map(function(m){return '<tr><td>'+m.subject+'</td><td>'+m.term+'</td><td>'+m.testType+'</td><td>'+m.score+' / '+m.total+'</td><td>'+Math.round(m.pct)+'%</td></tr>';}).join('');
   var msg = c.combined!==null && c.combined>=80 ? '🌟 Excellent! Distinction level. Keep it up!' : c.combined!==null && c.combined>=50 ? '✅ Passing. Keep practising 10 questions per day to improve.' : '⚠️ Needs support — please speak to teacher about extra help.';
-  document.getElementById('parentReport').innerHTML=`
-  <div class="card" style="text-align:center;border:3px solid #d4af37"><h2>${l.name}</h2><p>${l.grade} | Parent: ${l.parent||''}</p>
-  <div style="font-size:36px;font-weight:900">${c.combined!==null?c.combined+'%':'No data yet'}</div><p><b>Combined Score</b> — App + School Marks</p>
-  <p><span class="badge">📱 App Practice: ${l.score} / ${l.total} = ${acc}%</span> <span class="badge" style="background:#ccfbf1;color:#115e59">📝 School Marks Avg: ${c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'No marks yet'}</span></p>
-  <p>${msg}</p><p style="font-size:12px;color:#64748b">Last Active: ${l.lastActive||'-'}</p></div>
-  <div class="card"><h3>📱 App Practice — By Subject</h3>${subj?'<table><tr><th>Subject</th><th>Score</th><th>%</th></tr>'+subj+'</table>':'<p>No app practice yet.</p>'}</div>
-  <div class="card"><h3>📝 School Marks — Real Tests / Exams</h3>${marksHtml?'<table><tr><th>Subject</th><th>Term</th><th>Type</th><th>Mark</th><th>%</th></tr>'+marksHtml+'</table>':'<p>No school marks entered yet. Teacher will add them.</p>'}</div>
-  <div class="card"><h3>💡 What To Do Next</h3><p>1. Practise 10 questions per day in the app.<br>2. Focus on weakest subject above.<br>3. Ask teacher if Combined is below 50%.</p></div>`;
+  document.getElementById('parentReport').innerHTML='<div class="card" style="text-align:center;border:3px solid #d4af37"><h2>'+l.name+'</h2><p>'+l.grade+' | Parent: '+(l.parent||'')+'</p><div style="font-size:36px;font-weight:900">'+(c.combined!==null?c.combined+'%':'No data yet')+'</div><p><b>Combined Score</b> — App + School Marks</p><p><span class="badge">📱 App Practice: '+l.score+' / '+l.total+' = '+acc+'%</span> <span class="badge" style="background:#ccfbf1;color:#115e59">📝 School Marks Avg: '+(c.schoolAvg!==null?Math.round(c.schoolAvg)+'%':'No marks yet')+'</span></p><p>'+msg+'</p><p style="font-size:12px;color:#64748b">Last Active: '+(l.lastActive||'-')+'</p></div><div class="card"><h3>📱 App Practice — By Subject</h3>'+(subj?'<table><tr><th>Subject</th><th>Score</th><th>%</th></tr>'+subj+'</table>':'<p>No app practice yet.</p>')+'</div><div class="card"><h3>📝 School Marks — Real Tests / Exams</h3>'+(marksHtml?'<table><tr><th>Subject</th><th>Term</th><th>Type</th><th>Mark</th><th>%</th></tr>'+marksHtml+'</table>':'<p>No school marks entered yet. Teacher will add them.</p>')+'</div><div class="card"><h3>💡 What To Do Next</h3><p>1. Practise 10 questions per day in the app.<br>2. Focus on weakest subject above.<br>3. Ask teacher if Combined is below 50%.</p></div>';
 }
 function fmt(n){return Math.round(n).toLocaleString('en-ZA');}
 function saveScore(){try{localStorage.setItem('ACADEMY_SCORE',score);localStorage.setItem('ACADEMY_TOTAL',total);}catch(e){}}
@@ -237,7 +203,7 @@ function genPhys(n){var m=2+(n%8);var a=2+(n%6);var t=n%5;if(t===0){var F=m*a;re
 function genNat(n){var t=n%5;if(t===0)return {q:'Photosynthesis: Plants use CO2 + Water + Sunlight to make?',opts:['Oxygen + Glucose','Carbon Dioxide','Salt','Plastic'],ans:0,exp:'Photosynthesis: CO2 + H2O -> Glucose + Oxygen.',marks:3};if(t===1)return {q:'Which is a producer in a food web?',opts:['Lion','Grass','Hyena','Human'],ans:1,exp:'Grass is a producer.',marks:2};if(t===2)return {q:'Water boils at what temperature at sea level?',opts:['50C','100C','0C','200C'],ans:1,exp:'Water boils at 100C.',marks:2};if(t===3)return {q:'Which planet is known as the Red Planet?',opts:['Venus','Mars','Jupiter','Mercury'],ans:1,exp:'Mars is the Red Planet.',marks:2};var organs=['Heart','Lungs','Stomach','Brain'];var pick=organs[n%4];var funcs={'Heart':'Pumps blood','Lungs':'Take in oxygen','Stomach':'Digests food','Brain':'Controls body'};return {q:'What does the '+pick+' do?',opts:[funcs[pick],'Makes food by photosynthesis','Absorbs sunlight','Produces oxygen'],ans:0,exp:pick+' - '+funcs[pick]+'.',marks:2};}
 var SUBJECTS=[{key:'MATHS_LIT',icon:'📐',title:'MATHS LIT',desc:'Grade 10-12 • 600 + 100 Hard',color:'#7c3aed'},{key:'MATHS',icon:'∑',title:'MATHEMATICS',desc:'Grade 8-12 • 100 Q',color:'#0a1f4d'},{key:'PHYS',icon:'⚛️',title:'PHYSICAL SCIENCES',desc:'Grade 10-12 • 100 Q',color:'#059669'},{key:'NAT',icon:'🌱',title:'NATURAL SCIENCES',desc:'Grade 8-9 • 100 Q',color:'#059669'}];
 var TOPIC_MAP={MATHS_LIT:[{key:'FINANCE',title:'Finance',icon:'💰'},{key:'DATA',title:'Data',icon:'📊'},{key:'MEASURE',title:'Measurement',icon:'📏'},{key:'MAPS',title:'Maps',icon:'🗺️'},{key:'PROB',title:'Probability',icon:'🎲'},{key:'TAX',title:'Tax',icon:'🧾'}],MATHS:[{key:'MATHS',title:'Mathematics',icon:'∑'}],PHYS:[{key:'PHYS',title:'Physical Sciences',icon:'⚛️'}],NAT:[{key:'NAT',title:'Natural Sciences',icon:'🌱'}]};
-var GEN={FINANCE:genFinance,DATA:genData,[STRIPPED]
+var GEN={FINANCE:genFinance,DATA:genData,MEASURE:genMeasure,MAPS:genMaps,PROB:genProb,TAX:genTax,MATHS:genMaths,PHYS:genPhys,NAT:genNat};
 function setGrade(g){grade=g;document.getElementById('curGrade').textContent=g;if(g!==12&&curTopic==='HARD'){curTopic='FINANCE';}}
 function renderSubjects(){document.getElementById('subjectGrid').innerHTML=SUBJECTS.map(function(s){return '<div class="subject '+(s.key===curSubject?'active':'')+'" onclick="selectSubject(\''+s.key+'\')" style="border-color:'+s.color+'"><div style="font-size:36px">'+s.icon+'</div><b>'+s.title+'</b><br><small>'+s.desc+'</small><br><b>Tap To Open →</b></div>';}).join('');document.getElementById('learnSubject').textContent=SUBJECTS.find(function(x){return x.key===curSubject;}).title;renderTopics();}
 function renderTopics(){var list=TOPIC_MAP[curSubject]||[];document.getElementById('topicGrid').innerHTML=list.map(function(t){return '<div class="topic '+(t.key===curTopic?'active':'')+'" onclick="selectTopic(\''+t.key+'\')"><div style="font-size:28px">'+t.icon+'</div><b>'+t.title+'</b><br><small>100 Questions</small></div>';}).join('');}
